@@ -36,9 +36,7 @@ public class GlobalExceptionHandler {
         if (!StringUtils.isEmpty(jsonCallback)) {
             returnJson = jsonCallback + "(" + returnJson + ")";
         }
-
         LogUtil.error(buffer.toString());
-
         return returnJson;
     }
 }
