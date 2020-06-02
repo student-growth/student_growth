@@ -12,6 +12,6 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface UserInfoMapper extends BaseMapper<UserInfoMapper> {
     @Select("select user_id, user_name, department, major from db_user_info where user_id = #{uid}")
-    UserInfoEntity getOneUser(@Param("uid") int userId);
+    UserInfoEntity getOneUser(@Param("uid") String userId);
 
 }

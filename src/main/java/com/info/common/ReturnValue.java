@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class ReturnValue<T> {
 
-    private T object;
+    private T data;
     private List<T> list;
     private String systemError;
     /**
@@ -37,6 +37,16 @@ public class ReturnValue<T> {
     public void setStateMsg(StateMsg stateMsg){
         this.state = stateMsg.getState();
         this.msg = stateMsg.getMsg();
+    }
+
+    /**
+     * 附加参数错误的详细信息
+     * @param stateMsg
+     * @param detail
+     */
+    public void setStateMsgDetail(StateMsg stateMsg,String detail){
+        this.state = stateMsg.getState();
+        this.msg = stateMsg.getMsg()+":"+detail;
     }
 
     public JSONObject toJSON(){

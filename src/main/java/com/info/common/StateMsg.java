@@ -12,7 +12,9 @@ public enum  StateMsg {
     StateMsg_100(100,"操作成功"),
     StateMsg_101(101,"参数错误"),
     StateMsg_102(102,"操作失败"),
-    StateMsg_103(103,"数据库操作失败")
+    StateMsg_103(103,"数据库操作失败"),
+
+    StateMsg_202(202,"用户不存在"),
     ;
 
     private int state;

@@ -11,6 +11,7 @@ import java.io.Serializable;
 /**
  * @author : yue
  * @Date : 2020/5/31 / 23:14
+ * entity 作为dao层和service层的数据交换
  */
 @Data
 @ToString
