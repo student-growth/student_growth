@@ -31,7 +31,7 @@ public class UserService {
     public ReturnValue<UserInfoDto> getStudentInfo(String userId) {
         ReturnValue<UserInfoDto> result = new ReturnValue<>();
         //check params
-        if (userId.length() <= 0) {
+        if (null==userId || userId.length()==0) {
             result.setStateMsgDetail(StateMsg_101, "用户Id不能为空");
             return result;
         }

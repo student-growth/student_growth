@@ -1,5 +1,6 @@
 package com.info.entity;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import lombok.Data;
 import lombok.ToString;
@@ -21,9 +22,11 @@ public class UserInfoEntity extends Model<UserInfoEntity>{
     /**
      * user_id 学号
      */
-    @TableId(value = "userId")
+    @TableId(value = "user_id")
     private String userId;
+
     private String userName;
+
     private String department;
     private String major;
 
