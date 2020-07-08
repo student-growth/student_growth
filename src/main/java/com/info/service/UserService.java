@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by TerryJ on 2020/03/04.
+ * @author yue
+ *
  */
 @Service
 public class UserService {
@@ -34,7 +35,7 @@ public class UserService {
 
     @ApiOperation(value = "获取用户信息")
     public ReturnValue<UserInfoDto> getUserInfo(UserIdFormBean userIdFormBean) {
-        ReturnValue returnValue = new ReturnValue();
+        ReturnValue<UserInfoDto> returnValue = new ReturnValue<>();
 
         int userId = userIdFormBean.getUserId();
         if (userId <= 0) {
@@ -51,6 +52,7 @@ public class UserService {
         UserInfoDto userInfoDto = userInfoConverter.userInfoConverter(userInfoEntity);
 
         returnValue.setObject(userInfoDto);
+
         return returnValue;
     }
 
@@ -86,41 +88,5 @@ public class UserService {
             res.setStateMsg(StateMsg.StatusMsg_144);
             return res;
         }
-    }
-
-
-    public ReturnValue<UserInfoDto> getPageUserInfo(PageBean bean) {
-        ReturnValue<UserInfoDto> res = new ReturnValue<>();
-        //check parameter
-        if (null == bean.getPhone()) {
-            res.setStateMsg(StateMsg.StatusMsg_145);
-            return res;
-        }
-
-        int current = bean.getCurrpage();
-        int pageSize = bean.getPageSize();
-
-        String phone = "%"+bean.getPhone()+"%";
-
-
-        List<UserInfoEntity> users = userInfoMapper
-                .getAllUserInfo((current-1) * pageSize,
-                        bean.getPageSize(),
-                        phone);
-
-        List<UserInfoDto> userDto = users.stream().map(user->{
-            UserInfoDto dto = new UserInfoDto();
-            dto.setNickname(user.getNickname());
-            dto.setPhonenumber(user.getPhonenumber());
-            return dto;
-        }).collect(Collectors.toList());
-
-        int totalUser = userInfoMapper.countUser();
-        int totalPage = totalUser / pageSize;
-        res.setTotalpages(totalPage);
-        res.setTotalrecords(totalUser);
-        res.setCurrpage(current);
-        res.setList(userDto);
-        return res;
     }
 }

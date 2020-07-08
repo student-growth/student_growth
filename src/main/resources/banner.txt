@@ -1,5 +1,2 @@
 ${AnsiColor.BLACK}
 
-
-   Powered by 信栖网络
-

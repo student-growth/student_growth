@@ -36,11 +36,5 @@ public class UserController {
         return userService.register(userFormBean);
     }
 
-    //分页接口,取出手机号码为 1345开头的用户列表信息,每页3条记录。
-    @ApiOperation("查询用户信息")
-    @RequestMapping(value = "/getAllUser",method = RequestMethod.GET)
-    public ReturnValue<UserInfoDto> getAllUser(@RequestBody PageBean userPageBean){
-        return userService.getPageUserInfo(userPageBean);
-    }
 }
 
