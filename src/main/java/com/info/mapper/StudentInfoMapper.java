@@ -11,6 +11,7 @@ import java.util.List;
  * @author : yue
  * @Date : 2020/7/8 / 18:44
  */
+
 public interface StudentInfoMapper extends BaseMapper<Student> {
 
     /**
@@ -24,7 +25,14 @@ public interface StudentInfoMapper extends BaseMapper<Student> {
     List<Student> pageSelectStudent(@Param("start")int start, @Param("size")int size);
 
 
+    /**
+     * 获取密码
+     * @param id
+     * @return
+     */
     @Select("select password from student where id=#{id}")
     String getPassword(@Param("id") String id);
+
+
 
 }
