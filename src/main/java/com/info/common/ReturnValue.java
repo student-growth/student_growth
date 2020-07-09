@@ -22,24 +22,42 @@ public class ReturnValue<T> {
 		this.totalpages = totalpages;
 	}
 
-	private int state = StateMsg.StatusMsg_100.getState();//状态码
-	private String msg = StateMsg.StatusMsg_100.getMsg();//描述
+	private int state = StateMsg.StatusMsg_100.getState();
+	private String msg = StateMsg.StatusMsg_100.getMsg();
 
 	public void setStateMsg(StateMsg stateMsg) {
 		this.state = stateMsg.getState();
 		this.msg = stateMsg.getMsg();
 	}
 
-	private T Object;//返回对象信息
-	private List<T> list;//返回数字信息
+	/**
+	 * //返回对象信息
+	 */
+	private T Object;
+	/**
+	 * //返回数字信息
+	 */
+	private List<T> list;
 
-	private String systemerrormsg;//系统报错信息
+	/**
+	 * //系统报错信息
+	 */
+	private String systemerrormsg;
 
-	private int currpage = 0;    //当前页数
-	private long totalrecords = 0;    //全记录数
-	private int totalpages = 0;  //全页数
+	/**
+	 * //当前页数
+	 */
+	private int currpage = 0;
+	/**
+	 * //全记录数
+	 */
+	private long totalrecords = 0;
+	/**
+	 *  //全页数
+	 */
+	private int totalpages = 0;
 
-	// create by build json plugin
+
 	public JSONObject toJson() {
 		JSONObject jo = new JSONObject();
 		jo.put("status", state);

@@ -25,6 +25,13 @@ public class StudentController {
     @ApiOperation("分页获取学生列表")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public ReturnValue<Student> getStudentList(@RequestBody PageBean page){
-        return stuService.getStudentList(page);
+        ReturnValue<Student> res=null;
+        try{
+            res = stuService.getStudentList(page);
+
+        }catch (Exception e){
+            res.setMsg(e.getMessage());
+        }
+        return res;
     }
 }
