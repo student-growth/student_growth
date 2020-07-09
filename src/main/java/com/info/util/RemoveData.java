@@ -11,6 +11,12 @@ import java.sql.*;
  * 备份密码
  */
 public class RemoveData {
+
+    public static void main(String[] args) {
+        Connection connection;
+    }
+
+
 //    public static void main(String[] args) {
 //        Connection connection;
 //
