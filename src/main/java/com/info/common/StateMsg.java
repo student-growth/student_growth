@@ -1,6 +1,7 @@
 package com.info.common;
 
 /**
+
  * @author : yue
  * @Date : 2020/5/31 / 23:35
  */
@@ -45,6 +46,7 @@ public enum  StateMsg {
 
     public void setState(int state) {
         this.state = state;
+
     }
 
     public String getMsg() {
@@ -54,4 +56,6 @@ public enum  StateMsg {
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
+
 }

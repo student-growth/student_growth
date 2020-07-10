@@ -3,12 +3,16 @@ package com.info.annotation;
 import java.lang.annotation.*;
 
 /**
- * @author : yue
- * @Date : 2020/5/31 / 23:20
+ * Controller AOP 注解；生成对应的Controller文件
+ *
+ * @author TerryJ
+ * @Date
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Controller {
     String name();
+
 }
+
