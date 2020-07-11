@@ -8,6 +8,7 @@ import com.info.entity.ScoreEntity;
 import com.info.entity.Student;
 import com.info.exception.SystemException;
 import com.info.formbean.PageBean;
+import com.info.mapper.ScoreInfoMapper;
 import com.info.mapper.StudentInfoMapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class StudentService {
     @Resource
     private StudentInfoMapper studentMapper;
 
+    @Resource
+    private ScoreInfoMapper scoreMapper;
     @Resource
     private StudentConverter studentConverter;
 
@@ -54,16 +57,16 @@ public class StudentService {
     }
 
 
-//    @ApiOperation("获取成绩")
-//    public List<ScoreDTO> queryScoreById(String id) throws SystemException{
-//        List<ScoreEntity> scores = studentMapper.getScoreById(id);
-//        if(null==scores || scores.size()==0){
-//            throw new SystemException(StateMsg.StateMsg_104);
-//        }
-//        return scores.stream().map(item ->
-//                studentConverter.scoreInfoConverter(item))
-//                .collect(Collectors.toList());
-//
-//
-//    }
+    @ApiOperation("获取成绩")
+    public List<ScoreDTO> queryScoreById(String id) throws SystemException{
+        List<ScoreEntity> scores = scoreMapper.selectScoreById(id);
+        if(null==scores || scores.size()==0){
+            throw new SystemException(StateMsg.StateMsg_104);
+        }
+        return scores.stream().map(item ->
+                studentConverter.scoreInfoConverter(item))
+                .collect(Collectors.toList());
+
+
+    }
 }

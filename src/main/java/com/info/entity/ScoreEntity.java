@@ -2,6 +2,8 @@ package com.info.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * @author : yue
@@ -9,6 +11,7 @@ import lombok.Data;
  */
 @Data
 @TableName("score")
+@ToString
 public class ScoreEntity {
 
     private String courseId;

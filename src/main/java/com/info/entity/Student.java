@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
  */
 @Data
 @ToString
-@Accessors(chain = true)
 @TableName("student")
 public class Student {
     private String id;

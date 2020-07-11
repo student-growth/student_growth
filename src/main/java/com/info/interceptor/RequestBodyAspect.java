@@ -57,8 +57,7 @@ public class RequestBodyAspect {
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
         String url = request.getRequestURI();//URL
-
-        Map<String, Object> inputValue = new HashMap<>();
+        StringBuffer input = new StringBuffer("");
 
         //请求参数处理
         for (Object o : args) {
@@ -68,14 +67,15 @@ public class RequestBodyAspect {
             }
 
             try {
-                inputValue = (Map<String, Object>) JSON.toJSON(o);
+                input.append(JSON.toJSONString(o));
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         LogUtil.info("ACTION START=======[" + getIpAddress(request) + "]=======【Method : " + methodName + "】【RequestURL : " + url + "】=============");
-        LogUtil.info("请求参数=" + inputValue.toString());
+        LogUtil.info("请求参数=" + input.toString());
     }
 
     /**

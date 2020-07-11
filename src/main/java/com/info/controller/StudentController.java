@@ -47,12 +47,13 @@ public class StudentController {
             return result;
         }
         try{
-//            List<ScoreDTO> list = stuService.queryScoreById(id);
-//            result.setList(list);
-//            result.setStateMsg(StateMsg.StateMsg_100);
+            List<ScoreDTO> list = stuService.queryScoreById(id);
+            result.setList(list);
+            result.setStateMsg(StateMsg.StateMsg_100);
         }catch (Exception e){
             result.setSystemerrormsg(e.getMessage());
             result.setStateMsg(StateMsg.StateMsg_102);
+            e.printStackTrace();
         }
         return result;
     }
