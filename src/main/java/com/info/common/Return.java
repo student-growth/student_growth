@@ -1,5 +1,7 @@
 package com.info.common;
 
+import com.info.common.sysenum.StateMsg;
+import com.sun.org.apache.regexp.internal.RE;
 import lombok.Data;
 
 /**
@@ -15,4 +17,21 @@ public class Return<T> {
     private String sysError;
 
     private T data;
+
+    Return(){
+        this.code=200;
+        this.msg="操作成功";
+    }
+
+    Return(T data){
+
+        this.code=200;
+        this.msg ="操作成功";
+        this.data=data;
+    }
+
+    public void setStateMsg(StateMsg stateMsg) {
+        this.code = stateMsg.getState();
+        this.msg = stateMsg.getMsg();
+    }
 }

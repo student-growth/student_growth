@@ -10,7 +10,8 @@ import lombok.Data;
 public class StudentFormBean {
     private String id;
 
-    private String beforePassword;
+    private String password;
+
 
 
 }

@@ -1,7 +1,8 @@
 package com.info.service;
 
+import com.info.common.ReturnData;
 import com.info.common.ReturnValue;
-import com.info.common.StateMsg;
+import com.info.common.sysenum.StateMsg;
 import com.info.converter.StudentConverter;
 import com.info.dto.ScoreDTO;
 import com.info.entity.ScoreEntity;
@@ -31,6 +32,22 @@ public class StudentService {
     private ScoreInfoMapper scoreMapper;
     @Resource
     private StudentConverter studentConverter;
+
+
+    @ApiOperation(value = "通过学号密码 获取学生基本信息")
+    public Student getStudentInfo(String id,String password) throws SystemException{
+        Student student = studentMapper.getStudentById(id);
+        if(null==student){
+            throw new SystemException(StateMsg.StateMsg_202);
+        }
+        String encryptCode= EncryptUtil.encryptMD5(password);
+        if(!student.getPassword().equals(encryptCode)){
+            throw new SystemException(StateMsg.StateMsg_203);
+        }
+        return student;
+    }
+
+
 
     @ApiOperation(value = "分页查询学生信息")
     public ReturnValue<Student> getStudentList(PageBean page)

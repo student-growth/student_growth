@@ -1,6 +1,6 @@
 package com.info.exception;
 
-import com.info.common.StateMsg;
+import com.info.common.sysenum.StateMsg;
 
 /**
  * @author : yue

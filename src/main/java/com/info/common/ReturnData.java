@@ -5,5 +5,13 @@ package com.info.common;
  * @Date : 2020/7/11 / 16:15
  * 返回不带分页信息的对象
  */
-public class ReturnData<T> extends Return {
+public class ReturnData<T> extends Return<T> {
+
+    public ReturnData(){
+        super();
+    }
+
+    public ReturnData(T data){
+        super(data);
+    }
 }

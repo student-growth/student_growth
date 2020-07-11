@@ -1,4 +1,4 @@
-package com.info.common;
+package com.info.common.sysenum;
 
 /**
 
@@ -15,7 +15,7 @@ public enum  StateMsg {
     StateMsg_500(500,"操作失败"),
     StateMsg_103(103,"数据库操作失败"),
     StateMsg_104(104,"查询数据为空"),
-    StateMsg_202(202,"用户不存在"),
+    StateMsg_202(202,"学号错误或不存在"),
     StateMsg_203(203,"输入密码错误")
     ;
 

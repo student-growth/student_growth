@@ -13,4 +13,8 @@ public class EncryptUtil {
     public static String  encryptMD5(String msg){
         return DigestUtils.md5DigestAsHex(msg.getBytes());
     }
+
+    public static void main(String[] args) {
+        System.out.println(encryptMD5("123"));
+    }
 }

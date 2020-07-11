@@ -2,6 +2,7 @@ package com.info.common;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.info.common.sysenum.StateMsg;
 import lombok.Data;
 import java.util.List;
 
@@ -21,13 +22,10 @@ public class ReturnValue<T> extends Return<T> {
 		this.totalpages = totalpages;
 	}
 
-	private int state = StateMsg.StateMsg_100.getState();
-	private String msg = StateMsg.StateMsg_100.getMsg();
+	private int state = StateMsg.StateMsg_200.getState();
+	private String msg = StateMsg.StateMsg_200.getMsg();
 
-	public void setStateMsg(StateMsg stateMsg) {
-		this.state = stateMsg.getState();
-		this.msg = stateMsg.getMsg();
-	}
+
 
 	public void setStateMsg(StateMsg state, String param){
 		this.state = state.getState();

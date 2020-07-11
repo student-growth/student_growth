@@ -78,7 +78,7 @@ public class RandomUtil {
 			charTmp[i] = allChars[rand.nextInt(allLength)];
 		}
 
-		return String.valueOf(charTmp);// charTmp.toString();
+		return String.valueOf(charTmp);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class RandomUtil {
 		for (int i = 0; i < strLength; i++) {
 			charTmp[i] = allChar2[rand.nextInt(allLength2)];
 		}
-		return String.valueOf(charTmp);// charTmp.toString();
+		return String.valueOf(charTmp);
 	}
 
 	/**

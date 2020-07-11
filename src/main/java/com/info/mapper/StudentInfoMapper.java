@@ -24,8 +24,12 @@ public interface StudentInfoMapper extends BaseMapper<Student> {
     List<Student> pageSelectStudent(@Param("start")int start, @Param("size")int size);
 
 
+    @Select("select id,name,grade,department,major,sex from student where id=#{id}")
+    Student getStudentById(@Param("id") String id);
+
+
     /**
-     * 获取密码
+     * 获取密码,登录验证
      * @param id
      * @return
      */
