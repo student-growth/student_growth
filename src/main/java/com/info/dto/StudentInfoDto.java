@@ -16,6 +16,12 @@ public class StudentInfoDto {
 
     private String name;
 
+    private String grade;
 
+    private String department;
+
+    private String major;
+
+    private String sex;
 
 }

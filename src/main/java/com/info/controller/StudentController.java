@@ -4,6 +4,7 @@ import com.info.common.ReturnData;
 import com.info.common.ReturnValue;
 import com.info.common.sysenum.StateMsg;
 import com.info.dto.ScoreDTO;
+import com.info.dto.StudentInfoDto;
 import com.info.entity.Student;
 import com.info.formbean.PageBean;
 import com.info.formbean.StudentFormBean;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -26,14 +28,14 @@ public class StudentController {
     private StudentService stuService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ReturnData<Student> login(@RequestBody StudentFormBean info){
-        ReturnData<Student> result = new ReturnData<>();
+    public ReturnData<StudentInfoDto> login(@RequestBody StudentFormBean info){
+        ReturnData<StudentInfoDto> result = new ReturnData<>();
         if(null==info ||info.getId().isEmpty() || info.getPassword().isEmpty()){
             result.setStateMsg(StateMsg.StateMsg_101);
             return result;
         }
         try{
-            Student student = stuService.getStudentInfo(info.getId(), info.getPassword());
+            StudentInfoDto student = stuService.getStudentInfo(info.getId(), info.getPassword());
             result.setData(student);
 
         }catch (Exception e){
@@ -48,12 +50,14 @@ public class StudentController {
     @ApiOperation("分页获取学生列表")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public ReturnValue<Student> getStudentList(@RequestBody PageBean page){
-        ReturnValue<Student> res=null;
+        ReturnValue<Student> res=new ReturnValue<>();
         try{
             res = stuService.getStudentList(page);
 
         }catch (Exception e){
+            res.setStateMsg(StateMsg.StateMsg_500);
             res.setMsg(e.getMessage());
+            e.printStackTrace();
         }
         return res;
     }

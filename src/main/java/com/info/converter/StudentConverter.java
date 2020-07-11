@@ -9,7 +9,9 @@ import org.mapstruct.Mapper;
 
 /**
  * @author : yue
- * @Date : 2020/7/8 / 20:22
+ *
+ *  2020/7/8 / 20:22
+ *
  */
 @Mapper(componentModel = "spring")
 public interface StudentConverter {
@@ -18,4 +20,7 @@ public interface StudentConverter {
 
 
     ScoreDTO scoreInfoConverter(ScoreEntity entity);
+
+
+
 }

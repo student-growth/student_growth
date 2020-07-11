@@ -4,6 +4,7 @@ import com.info.common.ReturnValue;
 import com.info.common.sysenum.StateMsg;
 import com.info.converter.StudentConverter;
 import com.info.dto.ScoreDTO;
+import com.info.dto.StudentInfoDto;
 import com.info.entity.ScoreEntity;
 import com.info.entity.Student;
 import com.info.exception.SystemException;
@@ -34,16 +35,17 @@ public class StudentService {
 
 
     @ApiOperation(value = "通过学号密码 获取学生基本信息")
-    public Student getStudentInfo(String id,String password) throws SystemException{
-        Student student = studentMapper.getStudentById(id);
-        if(null==student){
+    public StudentInfoDto getStudentInfo(String id, String password) throws SystemException{
+        Student entity = studentMapper.getStudentById(id);
+        if(null==entity){
             throw new SystemException(StateMsg.StateMsg_202);
         }
         String encryptCode= EncryptUtil.encryptMD5(password);
-        if(!student.getPassword().equals(encryptCode)){
+        if(!entity.getPassword().equals(encryptCode)){
             throw new SystemException(StateMsg.StateMsg_203);
         }
-        return student;
+        return  studentConverter.stuInfoConverter(entity);
+
     }
 
 
