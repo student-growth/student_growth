@@ -14,7 +14,7 @@ public enum  StateMsg {
     StateMsg_101(101,"参数错误"),
     StateMsg_102(102,"操作失败"),
     StateMsg_103(103,"数据库操作失败"),
-
+    StateMsg_104(104,"查询数据为空"),
     StateMsg_202(202,"用户不存在"),
     ;
 

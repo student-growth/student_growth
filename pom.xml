@@ -76,17 +76,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!--database-->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-jdbc</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-
 
     <!--数据源包依赖 start-->
     <!--database-->

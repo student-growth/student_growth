@@ -3,6 +3,8 @@ package com.info.service;
 import com.info.common.ReturnValue;
 import com.info.common.StateMsg;
 import com.info.converter.StudentConverter;
+import com.info.dto.ScoreDTO;
+import com.info.entity.ScoreEntity;
 import com.info.entity.Student;
 import com.info.exception.SystemException;
 import com.info.formbean.PageBean;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author : yue
@@ -49,4 +52,18 @@ public class StudentService {
 
         return res;
     }
+
+
+//    @ApiOperation("获取成绩")
+//    public List<ScoreDTO> queryScoreById(String id) throws SystemException{
+//        List<ScoreEntity> scores = studentMapper.getScoreById(id);
+//        if(null==scores || scores.size()==0){
+//            throw new SystemException(StateMsg.StateMsg_104);
+//        }
+//        return scores.stream().map(item ->
+//                studentConverter.scoreInfoConverter(item))
+//                .collect(Collectors.toList());
+//
+//
+//    }
 }

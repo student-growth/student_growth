@@ -1,15 +1,16 @@
 package com.info.controller;
 
 import com.info.common.ReturnValue;
+import com.info.common.StateMsg;
+import com.info.dto.ScoreDTO;
 import com.info.entity.Student;
 import com.info.formbean.PageBean;
 import com.info.service.StudentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author : yue
@@ -33,5 +34,26 @@ public class StudentController {
             res.setMsg(e.getMessage());
         }
         return res;
+    }
+
+
+    @ApiOperation("查询学生成绩")
+    @RequestMapping(value = "/score",method = RequestMethod.GET)
+    public ReturnValue<ScoreDTO> getScoreById(@RequestParam("id") String id){
+        ReturnValue<ScoreDTO> result=new ReturnValue<>();
+        //check param
+        if(null==id || id.isEmpty()){
+            result.setStateMsg(StateMsg.StateMsg_101);
+            return result;
+        }
+        try{
+//            List<ScoreDTO> list = stuService.queryScoreById(id);
+//            result.setList(list);
+//            result.setStateMsg(StateMsg.StateMsg_100);
+        }catch (Exception e){
+            result.setSystemerrormsg(e.getMessage());
+            result.setStateMsg(StateMsg.StateMsg_102);
+        }
+        return result;
     }
 }

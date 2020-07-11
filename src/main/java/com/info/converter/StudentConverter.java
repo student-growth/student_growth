@@ -1,7 +1,9 @@
 package com.info.converter;
 
 
+import com.info.dto.ScoreDTO;
 import com.info.dto.StudentInfoDto;
+import com.info.entity.ScoreEntity;
 import com.info.entity.Student;
 import org.mapstruct.Mapper;
 
@@ -13,4 +15,7 @@ import org.mapstruct.Mapper;
 public interface StudentConverter {
 
     StudentInfoDto stuInfoConverter(Student entity);
+
+
+    ScoreDTO scoreInfoConverter(ScoreEntity entity);
 }

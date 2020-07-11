@@ -29,6 +29,11 @@ public class ReturnValue<T> {
 		this.msg = stateMsg.getMsg();
 	}
 
+	public void setStateMsg(StateMsg state, String param){
+		this.state = state.getState();
+		this.msg = "["+param+"]"+state.getMsg();
+	}
+
 	/**
 	 * //返回对象信息
 	 */
