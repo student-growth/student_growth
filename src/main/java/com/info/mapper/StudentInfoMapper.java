@@ -1,7 +1,6 @@
 package com.info.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.info.entity.ScoreEntity;
 import com.info.entity.Student;
 import org.apache.ibatis.annotations.*;
 
@@ -30,10 +29,11 @@ public interface StudentInfoMapper extends BaseMapper<Student> {
      * @param id
      * @return
      */
-    @Select("select password from student where id=#{id}")
+    @SelectProvider(type=com.info.mapper.provider.StudentProvider.class,
+    method = "queryPasswordById")
     String getPassword(@Param("id") String id);
 
 
-
-
+    @Update("update student set password=#{password} WHERE id=#{id}")
+    int  updatePassword(@Param("id") String id,@Param("password") String password);
 }

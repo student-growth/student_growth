@@ -10,7 +10,7 @@ import java.util.List;
  * @Date : 2020/5/31 / 23:32
  */
 @Data
-public class ReturnValue<T> {
+public class ReturnValue<T> extends Return<T> {
 	public ReturnValue() {
 	}
 
@@ -34,10 +34,7 @@ public class ReturnValue<T> {
 		this.msg = "["+param+"]"+state.getMsg();
 	}
 
-	/**
-	 * //返回对象信息
-	 */
-	private T Object;
+
 	/**
 	 * //返回数字信息
 	 */

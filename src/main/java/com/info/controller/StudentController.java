@@ -37,6 +37,8 @@ public class StudentController {
     }
 
 
+
+
     @ApiOperation("查询学生成绩")
     @RequestMapping(value = "/score",method = RequestMethod.GET)
     public ReturnValue<ScoreDTO> getScoreById(@RequestParam("id") String id){
@@ -49,10 +51,10 @@ public class StudentController {
         try{
             List<ScoreDTO> list = stuService.queryScoreById(id);
             result.setList(list);
-            result.setStateMsg(StateMsg.StateMsg_100);
+            result.setStateMsg(StateMsg.StateMsg_200);
         }catch (Exception e){
             result.setSystemerrormsg(e.getMessage());
-            result.setStateMsg(StateMsg.StateMsg_102);
+            result.setStateMsg(StateMsg.StateMsg_500);
             e.printStackTrace();
         }
         return result;

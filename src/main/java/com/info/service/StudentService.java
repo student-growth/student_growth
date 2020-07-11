@@ -10,6 +10,7 @@ import com.info.exception.SystemException;
 import com.info.formbean.PageBean;
 import com.info.mapper.ScoreInfoMapper;
 import com.info.mapper.StudentInfoMapper;
+import com.info.util.EncryptUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class StudentService {
     public ReturnValue<Student> getStudentList(PageBean page)
             throws SystemException{
         if(page.getCurrentPage()<=0) {
-            throw  new SystemException(StateMsg.StateMsg_100);
+            throw  new SystemException(StateMsg.StateMsg_200);
         }
         ReturnValue<Student> result = new ReturnValue<>();
         int start = (page.getCurrentPage() - 1) * page.getPageSize();
@@ -45,15 +46,16 @@ public class StudentService {
     }
 
     @ApiOperation("修改密码")
-    public ReturnValue<String> changePassword(String id, String oldPassword)
+    public String changePassword(String id, String oldPassword)
             throws SystemException{
-        if(null==id || oldPassword==null){
-            throw new SystemException(StateMsg.StateMsg_101);
-        }
-        ReturnValue<String> res = new ReturnValue<>();
         String password = studentMapper.getPassword(id);
+        if(!EncryptUtil.encryptMD5(password).equals(oldPassword)){
+            throw new SystemException(StateMsg.StateMsg_203);
+        }
 
-        return res;
+
+
+        return null;
     }
 
 
@@ -66,7 +68,5 @@ public class StudentService {
         return scores.stream().map(item ->
                 studentConverter.scoreInfoConverter(item))
                 .collect(Collectors.toList());
-
-
     }
 }

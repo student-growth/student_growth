@@ -31,4 +31,5 @@ public interface ScoreInfoMapper extends BaseMapper<ScoreEntity>{
             " score where student_id=#{id}")
     List<ScoreEntity> selectScoreById(@Param("id") String id);
 
+
 }
