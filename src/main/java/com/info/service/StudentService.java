@@ -1,6 +1,5 @@
 package com.info.service;
 
-import com.info.common.ReturnData;
 import com.info.common.ReturnValue;
 import com.info.common.sysenum.StateMsg;
 import com.info.converter.StudentConverter;

@@ -13,5 +13,4 @@ public class StudentFormBean {
     private String password;
 
 
-
 }
