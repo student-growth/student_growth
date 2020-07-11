@@ -19,7 +19,7 @@ public class PageBean {
 
     public PageBean(){
         this.currentPage=1;
-        //默认页面大小是30
+        //默认页面大小是10
         this.pageSize=10;
         this.query="";
     }

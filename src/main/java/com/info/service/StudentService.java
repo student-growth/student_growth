@@ -38,6 +38,7 @@ public class StudentService {
         return result;
     }
 
+
     @ApiOperation("修改密码")
     public ReturnValue<String> changePassword(String id, String oldPassword)
             throws SystemException{
