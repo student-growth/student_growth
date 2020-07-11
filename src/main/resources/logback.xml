@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<configuration>
+<configuration debug="false" scan="false">
+
 
     <!-- 日志根目录-->
-    <property scope="context" name="LOG_HOME" value="/data/logs/demo" />
+    <property scope="context" name="LOG_HOME" value="/data/logs/student_growth" />
 
     <!-- 日志文件名称-->
-    <property name="LOG_PREFIX" value="demo" />
+    <property name="LOG_PREFIX" value="student_growth" />
 
     <!-- 日志文件编码-->
     <property name="LOG_CHARSET" value="UTF-8" />

@@ -22,3 +22,4 @@ hs_err_pid*
 
 #application-dev
 applicatin-dev.properties
+logback-dev.xml
