@@ -48,7 +48,20 @@ public class StudentService {
 
     }
 
-
+    @ApiOperation("修改密码")
+    public String updatePassword(String id, String password, String newPassword)
+            throws SystemException{
+        String pwd = studentMapper.getPassword(id);
+        if(pwd==null || !pwd.equals(EncryptUtil.encryptMD5(password))){
+            throw new SystemException(StateMsg.StateMsg_202);
+        }
+        String updatePwd =  EncryptUtil.encryptMD5(newPassword);
+        int res = studentMapper.updatePassword(id, updatePwd);
+        if(res<=0){
+            throw new SystemException(StateMsg.StateMsg_500);
+        }
+        return StateMsg.StateMsg_200.getMsg();
+    }
 
     @ApiOperation(value = "分页查询学生信息")
     public ReturnValue<Student> getStudentList(PageBean page)

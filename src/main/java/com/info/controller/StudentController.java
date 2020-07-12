@@ -47,6 +47,27 @@ public class StudentController {
     }
 
 
+    @ApiOperation("修改密码")
+    @RequestMapping(value = "/modifyPwd",method = RequestMethod.POST)
+    public ReturnData<String> modifyPassword(@RequestBody StudentFormBean info){
+        ReturnData<String> result = new ReturnData<>();
+        if(info.getId()==null || info.getPassword()==null ||
+                info.getNewPassword()==null){
+            result.setStateMsg(StateMsg.StateMsg_101);
+            return result;
+        }
+        try{
+            String data = stuService.updatePassword(info.getId(), info.getPassword(), info.getNewPassword());
+            result.setData(data);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setStateMsg(StateMsg.StateMsg_500);
+            result.setSysError(e.getMessage());
+        }
+        return result;
+    }
+
+
     @ApiOperation("分页获取学生列表")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public ReturnValue<Student> getStudentList(@RequestBody PageBean page){
