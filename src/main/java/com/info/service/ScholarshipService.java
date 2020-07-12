@@ -20,7 +20,17 @@ public class ScholarshipService {
     private ScholarshipMapper schMapper;
 
     @ApiOperation("返回学生奖学金申请结果")
-    public ApplyScholarship getScholarshipResult(String student_id){
+    public ApplyScholarship getScholarshipResult(String student_id) {
         return schMapper.idSelectScholarship(student_id);
+    }
+
+    @ApiOperation("修改奖学金的审核状态")
+    public String changeScholarshipStatus(String student_id, String status) {
+        try {
+            schMapper.idChangeStatus(student_id, status);
+        } catch (Exception e) {
+            return "修改失败";
+        }
+        return "修改成功";
     }
 }

@@ -11,7 +11,10 @@ import org.apache.ibatis.annotations.Select;
  **/
 @Mapper
 public interface ScholarshipMapper {
-    @Select("SELECT id,student_id,apply_status,reason,create_time,"+
-    "modify_time is_delete FROM apply_scholarship WHERE student_id = #{student_id}")
+    @Select("SELECT id,student_id,apply_status,reason,create_time," +
+            "modify_time is_delete FROM apply_scholarship WHERE student_id = #{student_id}")
     ApplyScholarship idSelectScholarship(@Param("student_id") String student_id);
+
+    @Select("UPDATE apply_scholarship SET apply_status = #{status} WHERE student_id = #{student_id}")
+    void idChangeStatus(@Param("student_id") String student_id, @Param("status") String status);
 }
