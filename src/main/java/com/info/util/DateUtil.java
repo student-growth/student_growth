@@ -938,11 +938,21 @@ public class DateUtil {
 	 * @return
 	 */
 	public static LocalDate compareAndGetMin(LocalDate date1, LocalDate date2) {
-		if (date1 == null && date2 == null) return null;
-		else if (date1 == null) return date2;
-		else if (date2 == null) return date1;
-		else if (date1.isBefore(date2) || date1.equals(date2)) return date1;
-		else return date2;
+		if (date1 == null && date2 == null) {
+			return null;
+		}
+		else if (date1 == null) {
+			return date2;
+		}
+		else if (date2 == null) {
+			return date1;
+		}
+		else if (date1.isBefore(date2) || date1.equals(date2)) {
+			return date1;
+		}
+		else{
+			return date2;
+		}
 	}
 
 	/**
@@ -986,8 +996,7 @@ public class DateUtil {
 	 * @return
 	 */
 	public static boolean isEqual(Date date1, Date date2) {
-		if (date1 == null || date2 == null) return false;
-		return date1.equals(date2);
+		return !(date1 == null || date2 == null) && date1.equals(date2);
 	}
 
 	/**
@@ -998,8 +1007,7 @@ public class DateUtil {
 	 * @return
 	 */
 	public static boolean isEqual(ChronoLocalDate date1, ChronoLocalDate date2) {
-		if (date1 == null || date2 == null) return false;
-		return date1.equals(date2);
+		return !(date1 == null || date2 == null) && date1.equals(date2);
 	}
 
 	public static void main(String[] args) {

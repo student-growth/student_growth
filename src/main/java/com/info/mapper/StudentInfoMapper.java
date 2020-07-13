@@ -24,6 +24,8 @@ public interface StudentInfoMapper extends BaseMapper<Student> {
     List<Student> pageSelectStudent(@Param("start")int start, @Param("size")int size);
 
 
+
+
     @Select("select id,name,password,grade,department,major,sex from student where id=#{id}")
     Student getStudentById(@Param("id") String id);
 

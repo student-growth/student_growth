@@ -18,9 +18,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by TerryJ on 2016就/03/14.
- */
 @Aspect
 @Component
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -56,7 +53,7 @@ public class RequestBodyAspect {
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
-        String url = request.getRequestURI();//URL
+        String url = request.getRequestURI();
         StringBuffer input = new StringBuffer("");
 
         //请求参数处理
