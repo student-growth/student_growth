@@ -60,11 +60,12 @@ public class NewsController {
             if(Files.exists(Paths.get(filePath).resolve(fullFileName))){
                 File existFile = new java.io.File(filePath+fullFileName);
                 existFile.delete();
+                img.transferTo(file);
                 newsService.updateImgDate(fullFileName);
             }else{
+                img.transferTo(file);
                 newsService.saveImage(fullFileName, filePath);
             }
-            img.transferTo(file);
         }catch (Exception e){
            result.setStateMsg(StateMsg.StateMsg_500);
            result.setSysError(e.getMessage());
