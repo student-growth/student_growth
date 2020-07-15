@@ -1,10 +1,10 @@
 package com.info.util;
 
 import com.info.annotation.ExcelColumn;
-import com.info.dto.ScoreDTO;
-import com.info.dto.StudentInfoDto;
+import com.info.common.sysenum.StateMsg;
+import com.info.exception.SystemException;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -13,8 +13,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -30,7 +28,6 @@ public class ExcelUtil {
     private  static final  String XLS = ".xls";
     private  static final  String XLSX = ".xlsx";
 
-
     public <R> List<R> importExcel(MultipartFile file, Class<R> clazz)
             throws Exception{
         Workbook workbook = getWorkbook(file);
@@ -38,16 +35,58 @@ public class ExcelUtil {
         return  getList(sheet, clazz);
     }
 
-    public  MultipartFile  exportExcel(List<T> clazz)
-            throws IOException{
-        //todo export
-        return null;
+
+    public <R> HSSFWorkbook exportExcel(Class<R> clazz, List<R> list, String fileName)
+            throws Exception{
+        if(fileName==null || fileName.isEmpty()){
+            throw new SystemException(StateMsg.StateMsg_103);
+        }
+
+        HSSFWorkbook workbook =new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet();
+        createSheet(sheet,clazz,list);
+        return workbook;
     }
 
-    public <R> List<R> getList(Sheet sheet, Class<R> clazz)
+    private <T> void createSheet(Sheet sheet,Class<T> clazz,List<T> list)
+            throws Exception{
+        int colIndex = 0;
+        int rowIndex = 0;
+        while(rowIndex<=list.size()){
+            Row row = sheet.createRow(rowIndex);
+            //create title
+            if(rowIndex==0){
+                for(Field field:clazz.getDeclaredFields()){
+                    Cell cell = row.createCell(colIndex++);
+                    cell.setCellValue(field.getAnnotation(ExcelColumn.class).name());
+                }
+                colIndex=0;
+            }
+            //create table body
+            else{
+                T item = list.get(rowIndex-1);
+                for(Field field:clazz.getDeclaredFields()){
+                    Cell cell = row.createCell(colIndex++);
+                    String methodName = "get"+field.getName().substring(0,1).toUpperCase()+
+                            field.getName().substring(1);
+                    Method method = clazz.getMethod(methodName);
+                    Object value = method.invoke(item);
+                    if(field.getType()==String.class){
+                        cell.setCellValue((String)value);
+                    }else if(field.getType()==Double.class){
+                        cell.setCellValue((Double)value);
+                    }
+                }
+                colIndex=0;
+            }
+            rowIndex++;
+        }
+    }
+
+
+    private <R> List<R> getList(Sheet sheet, Class<R> clazz)
             throws Exception{
         List<R> result  = new ArrayList<>();
-
         int rowNum = sheet.getPhysicalNumberOfRows();
         Row title = sheet.getRow(0);
         int colNum = title.getPhysicalNumberOfCells();
@@ -63,7 +102,6 @@ public class ExcelUtil {
         }
         return result;
     }
-
 
     @SuppressWarnings("deprecation")
     private Object parseCell(Cell cell){
@@ -111,5 +149,29 @@ public class ExcelUtil {
             throw new IOException("unknown file format :" + fileName);
         }
     }
+
+//    public static void main(String[] args) {
+//        ExcelUtil util = new ExcelUtil();
+//        List<StudentInfoDto> list =new ArrayList<>();
+//        StudentInfoDto student1 = new StudentInfoDto();
+//        student1.setId("123");
+//        student1.setName("leesure123");
+//        student1.setDepartment("软件学院");
+//        student1.setMajor("网络工程");
+//        student1.setGrade("2015级");
+//        list.add(student1);
+//        StudentInfoDto student2 = new StudentInfoDto();
+//        student2.setId("345");
+//        student2.setName("leesure345");
+//        student2.setDepartment("软件学院");
+//        student2.setMajor("网络工程");
+//        student2.setGrade("2015级");
+//        list.add(student2);
+//        try{
+//            util.exportExcel(StudentInfoDto.class,list,"student.xls");
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
 }

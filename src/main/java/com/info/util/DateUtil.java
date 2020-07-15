@@ -1010,7 +1010,7 @@ public class DateUtil {
 		return !(date1 == null || date2 == null) && date1.equals(date2);
 	}
 
-	public static void main(String[] args) {
-		System.out.println(getNowTimeString());
-	}
+//	public static void main(String[] args) {
+//		System.out.println(getNowTimeString());
+//	}
 }

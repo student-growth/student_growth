@@ -30,6 +30,7 @@ public class StudentService {
 
     @Resource
     private ScoreInfoMapper scoreMapper;
+
     @Resource
     private StudentConverter studentConverter;
 
@@ -45,8 +46,10 @@ public class StudentService {
             throw new SystemException(StateMsg.StateMsg_203);
         }
         return  studentConverter.stuInfoConverter(entity);
-
     }
+
+
+
 
     @ApiOperation("修改密码")
     public String updatePassword(String id, String password, String newPassword)
@@ -83,9 +86,6 @@ public class StudentService {
         if(!EncryptUtil.encryptMD5(password).equals(oldPassword)){
             throw new SystemException(StateMsg.StateMsg_203);
         }
-
-
-
         return null;
     }
 
