@@ -2,6 +2,7 @@ package com.info.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.info.entity.Student;
+import com.info.mapper.provider.StudentProvider;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -28,6 +29,15 @@ public interface StudentInfoMapper extends BaseMapper<Student> {
 
     @Select("select id,name,password,grade,department,major,sex from student where id=#{id}")
     Student getStudentById(@Param("id") String id);
+
+    /**
+     * 批量插入数据
+     * @param students 学生列表信息
+     * @return 插入的数量
+     */
+    @InsertProvider(type = com.info.mapper.provider.StudentProvider.class,
+            method = "batchInsert")
+    int batchInsert(@Param("list") List<Student> students);
 
 
     /**

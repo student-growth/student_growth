@@ -22,5 +22,6 @@ public interface StudentConverter {
     ScoreDTO scoreInfoConverter(ScoreEntity entity);
 
 
+    Student studentEnityCov(StudentInfoDto dto);
 
 }

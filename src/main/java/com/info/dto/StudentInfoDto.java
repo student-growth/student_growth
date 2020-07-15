@@ -1,5 +1,6 @@
 package com.info.dto;
 
+import com.info.annotation.ExcelColumn;
 import lombok.Data;
 
 /**
@@ -11,16 +12,21 @@ import lombok.Data;
 @Data
 public class StudentInfoDto {
 
+    @ExcelColumn(name = "学号")
     private String id;
 
+    @ExcelColumn(name = "姓名")
     private String name;
 
-    private String grade;
-
+    @ExcelColumn(name = "学院")
     private String department;
 
+    @ExcelColumn(name = "专业")
     private String major;
 
-    private String sex;
+    @ExcelColumn(name = "班级")
+    private String grade;
 
+    @ExcelColumn(name = "性别")
+    private String sex;
 }

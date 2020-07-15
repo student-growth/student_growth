@@ -2,6 +2,7 @@ package com.info.util;
 
 import com.info.annotation.ExcelColumn;
 import com.info.dto.ScoreDTO;
+import com.info.dto.StudentInfoDto;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
@@ -12,6 +13,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -41,7 +44,7 @@ public class ExcelUtil {
         return null;
     }
 
-    private <R> List<R> getList(Sheet sheet, Class<R> clazz)
+    public <R> List<R> getList(Sheet sheet, Class<R> clazz)
             throws Exception{
         List<R> result  = new ArrayList<>();
 
@@ -106,21 +109,6 @@ public class ExcelUtil {
             return new XSSFWorkbook(file.getInputStream());
         }else{
             throw new IOException("unknown file format :" + fileName);
-        }
-    }
-
-
-    public static void main(String[] args) {
-        ExcelUtil util =new ExcelUtil();
-        Map<String,Object> tables = new HashMap<>(2);
-        tables.put("课程号","123131");
-        tables.put("平时成绩",123.0);
-        try{
-            //test getObject
-            ScoreDTO object = util.getObject(ScoreDTO.class, tables);
-            System.out.println(object.toString());
-        }catch (Exception e){
-            e.printStackTrace();
         }
     }
 

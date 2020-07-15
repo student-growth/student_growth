@@ -1,6 +1,12 @@
 package com.info.util;
 
-import java.sql.*;
+
+import com.info.dto.StudentInfoDto;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.List;
 
 /**
  * @author : yue
@@ -8,12 +14,26 @@ import java.sql.*;
  * <p>
  * 转储新浪云服务拷贝的数据库到本系统数据库
  * <p>
- * 备份密码
+ *
  */
 public class RemoteData {
 
+    //数据迁移
+
 //    public static void main(String[] args) {
-//        Connection connection;
+//        ExcelUtil util =new ExcelUtil();
+//        //C:\Users\yue\Desktop
+//        try{
+//            HSSFWorkbook book = new HSSFWorkbook(new FileInputStream(new File("C:/Users/yue/Desktop/student.xls")));
+//            book.getSheetAt(0);
+//            List<StudentInfoDto> list = util.getList(book.getSheetAt(0), StudentInfoDto.class);
+//            System.out.println(list.toString());
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
+////    public static void main(String[] args) {
+////        Connection connection;
 //    }
 //
 //
