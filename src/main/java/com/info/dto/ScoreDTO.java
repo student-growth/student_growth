@@ -1,53 +1,41 @@
 package com.info.dto;
 
+import com.info.annotation.ExcelColumn;
 import lombok.Data;
 
 /**
  * @author : yue
- * @Date : 2020/7/10 / 20:59
+ * 2020/7/10 / 20:59
  * 分数 DTO
- * 查询分数
  */
 @Data
 public class ScoreDTO {
 
+    @ExcelColumn(name = "课程号")
     private String courseId;
 
+    @ExcelColumn(name = "课程名称")
     private String courseName;
 
-    /**
-     * 期末成绩
-     */
+    @ExcelColumn(name = "期末成绩")
     private Double finalScore;
 
-    /**
-     * 平时成绩
-     */
+    @ExcelColumn(name = "平时成绩")
     private Double dailyScore;
 
-    /**
-     * 折算成绩-来源平时成绩和期末成绩
-     */
+    @ExcelColumn(name = "折算成绩")
     private  Double score;
 
-    /**
-     * 学分
-     */
+    @ExcelColumn(name = "学分")
     private Double credit;
 
-    /**
-     * 绩点
-     */
+    @ExcelColumn(name = "绩点")
     private Double point;
 
-    /**
-     * 补考成绩
-     */
+    @ExcelColumn(name="补考成绩")
     private Double resetScore;
 
-    /**
-     * 重修成绩
-     */
+    @ExcelColumn(name = "重修成绩")
     private Double rebuildScore;
 
 
