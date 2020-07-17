@@ -139,6 +139,14 @@
     </dependency>
     <!--excel poi end -->
 
+    <!--FastDFS-->
+    <dependency>
+      <groupId>com.github.tobato</groupId>
+      <artifactId>fastdfs-client</artifactId>
+      <version>1.26.2</version>
+    </dependency>
+
+
     <!--二维码生成解析-->
     <dependency>
       <groupId>com.google.zxing</groupId>

@@ -1,9 +1,13 @@
 package com.info;
 
+import com.github.tobato.fastdfs.FdfsClientConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableMBeanExport;
+import org.springframework.context.annotation.Import;
+import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.servlet.MultipartConfigElement;
@@ -14,8 +18,10 @@ import javax.servlet.MultipartConfigElement;
  * @author terryj
  */
 
+@Import(FdfsClientConfig.class)
 @EnableScheduling
 @SpringBootApplication
+@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 public class StudentGrowth
 {
 

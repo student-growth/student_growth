@@ -64,7 +64,7 @@ public class RequestBodyAspect {
             }
 
             try {
-                input.append(JSON.toJSONString(o));
+//                input.append(JSON.toJSONString(o));
 
             } catch (Exception e) {
                 e.printStackTrace();

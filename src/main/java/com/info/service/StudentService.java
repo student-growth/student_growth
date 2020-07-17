@@ -1,8 +1,10 @@
 package com.info.service;
 
+import com.github.tobato.fastdfs.domain.StorePath;
 import com.info.common.ReturnValue;
 import com.info.common.sysenum.StateMsg;
 import com.info.converter.StudentConverter;
+import com.info.dto.FileDTO;
 import com.info.dto.ScoreDTO;
 import com.info.dto.StudentInfoDto;
 import com.info.entity.ScoreEntity;
@@ -12,10 +14,20 @@ import com.info.formbean.PageBean;
 import com.info.mapper.ScoreInfoMapper;
 import com.info.mapper.StudentInfoMapper;
 import com.info.util.EncryptUtil;
+import com.info.util.FastClientUtil;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
+import jdk.internal.util.xml.impl.Input;
+import org.checkerframework.framework.qual.FromByteCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +46,10 @@ public class StudentService {
     @Resource
     private StudentConverter studentConverter;
 
+    @Autowired
+    private FastClientUtil clientUtil;
 
-    @ApiOperation(value = "通过学号密码 获取学生基本信息")
+    @ApiOperation(value = "通过学号密码获取学生基本信息")
     public StudentInfoDto getStudentInfo(String id, String password) throws SystemException{
         Student entity = studentMapper.getStudentById(id);
         if(null==entity){
@@ -99,5 +113,20 @@ public class StudentService {
         return scores.stream().map(item ->
                 studentConverter.scoreInfoConverter(item))
                 .collect(Collectors.toList());
+    }
+
+
+
+    public FileDTO uploadFile(MultipartFile file, String id) throws Exception{
+        FileDTO res = new FileDTO();
+        StorePath storePath = clientUtil.upload(file);
+        res.setGroup(storePath.getGroup());
+        res.setPath(storePath.getPath());
+        return res;
+    }
+
+    public byte[] downloadFile(String group, String path, String fileName)
+            throws Exception{
+        return clientUtil.download(group, path);
     }
 }

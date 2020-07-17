@@ -7,6 +7,7 @@ import com.info.formbean.pc.ExportStuFormBean;
 import com.info.service.StudentService;
 import com.info.service.pc.ExcelService;
 import com.info.util.ExcelUtil;
+import io.swagger.annotations.ApiOperation;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +51,8 @@ public class ExcelController {
         return result;
     }
 
-    @RequestMapping(value = "/outputStu",method = RequestMethod.GET)
+    @ApiOperation("导出学生信息Excel")
+    @RequestMapping(value = "/exportStu",method = RequestMethod.GET)
     private ReturnData<String> outputStu(@RequestBody ExportStuFormBean param,
                                          HttpServletResponse response){
         ReturnData<String> result = new ReturnData<>();
@@ -59,7 +61,7 @@ public class ExcelController {
             response.setContentType("application/vnd.ms-excel");
             response.setHeader("Content-disposition",
                     "attachment; filename="+fileName);
-            //todo 查询
+            //todo 批量查询
             //todo HSSFWorkbook workbook = util.exportExcel(StudentInfoDto.class, list, "Student.xls");
             //todo workbook.write(response.getOutputStream());
         }catch (Exception e){
@@ -69,4 +71,5 @@ public class ExcelController {
         }
         return result;
     }
+
 }
