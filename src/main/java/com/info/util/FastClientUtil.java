@@ -13,7 +13,7 @@ import java.io.*;
 
 /**
  * @author : yue
- * @Date : 2020/7/17 / 0:48
+ * 2020/7/17 / 0:48
  */
 @Component
 public class FastClientUtil {
@@ -41,10 +41,9 @@ public class FastClientUtil {
 
     public byte[] download(String group,String path) throws Exception{
         return  storageClient.downloadFile(group, path, new DownloadByteArray());
-
     }
 
-
-
-
+    public void delete(String group,String path) throws Exception{
+        storageClient.deleteFile(group,path);
+    }
 }

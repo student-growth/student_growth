@@ -126,15 +126,16 @@ public class StudentController {
     }
 
 
+    //@RequestBody FileDTO fileInfo,
     @RequestMapping(value = "/download",method = RequestMethod.GET)
-    public void downloadFile(@RequestBody FileDTO fileInfo,
+    public void downloadFile(
                              HttpServletResponse response) {
-        //todo 添加前端传来的参数
+        //todo 添加前端传来的参数  /usr/include/fastdfs /usr/include/fastcommon
         try {
             response.setContentType("multipart/form-data");
             response.setHeader("Content-Disposition",
-                    "attachment;fileName=" + fileInfo.getName());
-            byte[] stream =  stuService.downloadFile( fileInfo.getGroup(), fileInfo.getPath(),
+                    "attachment;fileName=" + "a.jpg");
+            byte[] stream =  stuService.downloadFile("group1", "M00/00/00/rBGh4F8RP2mAFI9cAAUPnIaxxmg087.jpg",
                     null);
             response.getOutputStream().write(stream);
         } catch (Exception e) {
