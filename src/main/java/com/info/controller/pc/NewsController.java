@@ -3,6 +3,8 @@ package com.info.controller.pc;
 import com.info.common.ReturnData;
 import com.info.common.ReturnValue;
 import com.info.common.sysenum.StateMsg;
+import com.info.dto.ArticleDTO;
+import com.info.dto.FileDTO;
 import com.info.dto.pc.ImageDTO;
 import com.info.service.pc.NewsService;
 import com.info.util.RandomUtil;
@@ -36,46 +38,34 @@ public class NewsController {
     @Value("${uploadpath-root-dir}")
     private String filePath;
 
+
+    @Value("${article-path}")
+    private String articlePath;
+
     @Autowired
     private NewsService newsService;
 
     @ApiOperation("上传图片")
     @RequestMapping("/upload")
-    public ReturnData<String> uploadCarouselImage(@RequestParam("imageFile")MultipartFile img){
-        ReturnData<String> result =new ReturnData<>();
-        if(img.isEmpty()){
-            result.setStateMsg(StateMsg.StateMsg_102);
-            return result;
+    public ReturnData<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        ReturnData<String> result = new ReturnData<>();
+        try {
+            String data = newsService.uploadImage(file);
+            result.setData(data);
+        } catch (Exception e) {
+            result.setStateMsg(StateMsg.StateMsg_500);
+            result.setSysError(e.getMessage());
+            e.printStackTrace();
         }
-        String fullFileName = img.getOriginalFilename();
-        File file  = new File(filePath+fullFileName);
-        if(!file.getParentFile().exists()){
-            if(!file.getParentFile().mkdirs()){
-                result.setStateMsg(StateMsg.StateMsg_204);
-            }
-        }
-        //如果文件重复则删除重复的文件
-        try{
-
-            if(Files.exists(Paths.get(filePath).resolve(fullFileName))){
-                File existFile = new java.io.File(filePath+fullFileName);
-                existFile.delete();
-                img.transferTo(file);
-                newsService.updateImgDate(fullFileName);
-            }else{
-                img.transferTo(file);
-                newsService.saveImage(fullFileName, filePath);
-            }
-        }catch (Exception e){
-           result.setStateMsg(StateMsg.StateMsg_500);
-           result.setSysError(e.getMessage());
-           e.printStackTrace();
-       }
-       return result;
+        return result;
     }
 
 
-    @ApiOperation("文件下载")
+    /**
+     * 文件下载
+     * @param response void
+     * @param name fileName
+     */
     @GetMapping("/download/{name}")
     public void getImage(HttpServletResponse response,
                          @PathVariable("name") String name) {
@@ -91,39 +81,16 @@ public class NewsController {
         }
     }
 
-    @ApiOperation("访问图片")
-    @GetMapping("/img/{name}")
-    public ResponseEntity<Object> getImage(@PathVariable("name") String name){
-        try{
-            File file = new File(filePath+name);
-            InputStreamResource source = new InputStreamResource(new FileInputStream(file));
-            HttpHeaders headers = new HttpHeaders();
-            headers.add ( "Content-Disposition",String.format("attachment;filename=\"%s",name));
-            headers.add ( "Cache-Control","no-cache,no-store,must-revalidate" );
-            headers.add ( "Pragma","no-cache" );
-            headers.add ( "Expires","0" );
 
-            return  ResponseEntity.ok()
-                    .headers(headers)
-                    .contentLength(file.length())
-                    .contentType(MediaType.parseMediaType ( "application/txt" ))
-                    .body(source);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return  null;
-    }
-
-    @ApiOperation("获取轮播图图片列表")
-    @RequestMapping(value = "/imgList",method = RequestMethod.GET)
-    public ReturnValue<ImageDTO>  getCarouselList(@RequestParam("size") int size){
-        ReturnValue<ImageDTO> result = new ReturnValue<>();
+    @RequestMapping(value = "/edit_article",method = RequestMethod.POST)
+    public ReturnData<String> editArticle(@RequestBody ArticleDTO article){
+        ReturnData<String> result = new ReturnData<>();
         try{
-            List<ImageDTO> data = newsService.getRecentImg(size);
-            result.setList(data);
+            String data = newsService.saveArticle(article);
+            result.setData(data);
         }catch (Exception e){
             result.setStateMsg(StateMsg.StateMsg_500);
-            result.setSystemerrormsg(e.getMessage());
+            result.setSysError(e.getMessage());
             e.printStackTrace();
         }
         return result;

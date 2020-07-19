@@ -2,6 +2,7 @@ package com.info.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.info.entity.ImageEntity;
+import com.info.mapper.provider.ImageProvider;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -22,8 +23,14 @@ public interface ImageMapper extends BaseMapper<ImageEntity> {
 
 
 
-    @Select("select id,name,path,create_time from image where is_delete=0 order by modify_time desc " +
-            "limit 0,#{size}")
+
+    @Results(id = "imgMap",value = {
+            @Result(column = "id",property = "id"),
+            @Result(column = "name",property = "name"),
+            @Result(column = "img_group",property = "imgGroup"),
+            @Result(column = "path",property = "path")
+    })
+    @SelectProvider(type = ImageProvider.class, method = "selectRecentImage")
     List<ImageEntity> queryRecentImage(@Param("size") int size);
 
 

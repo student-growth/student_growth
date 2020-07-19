@@ -7,6 +7,7 @@ import com.info.converter.StudentConverter;
 import com.info.dto.FileDTO;
 import com.info.dto.ScoreDTO;
 import com.info.dto.StudentInfoDto;
+import com.info.entity.ImageEntity;
 import com.info.entity.ScoreEntity;
 import com.info.entity.Student;
 import com.info.exception.SystemException;
@@ -16,18 +17,11 @@ import com.info.mapper.StudentInfoMapper;
 import com.info.util.EncryptUtil;
 import com.info.util.FastClientUtil;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
-import jdk.internal.util.xml.impl.Input;
-import org.checkerframework.framework.qual.FromByteCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -116,16 +110,25 @@ public class StudentService {
     }
 
 
-
+    /**
+     * 上传学生申请的照片
+     * @param file image
+     * @param id student_id
+     * @return void
+     * @throws Exception void
+     */
     public FileDTO uploadFile(MultipartFile file, String id) throws Exception{
         FileDTO res = new FileDTO();
         StorePath storePath = clientUtil.upload(file);
-        res.setGroup(storePath.getGroup());
-        res.setPath(storePath.getPath());
+        ImageEntity image =new ImageEntity();
+        image.setName(file.getName());
+        image.setPath(storePath.getPath());
+        image.setImgGroup(storePath.getGroup());
+
         return res;
     }
 
-    public byte[] downloadFile(String group, String path, String fileName)
+    public byte[] downloadFile(String group, String path)
             throws Exception{
         return clientUtil.download(group, path);
     }

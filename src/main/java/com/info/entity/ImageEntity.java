@@ -15,11 +15,8 @@ public class ImageEntity {
 
     private String name;
 
-    private String path;
+    private String imgGroup;
 
-    /**
-     * 图片上传时间
-     */
-    private Date createTime;
+    private String path;
 
 }

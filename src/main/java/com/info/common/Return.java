@@ -16,7 +16,7 @@ public class Return<T> {
 
     private String sysError;
 
-    private T data;
+
 
     Return(){
         this.code=200;
@@ -27,7 +27,6 @@ public class Return<T> {
 
         this.code=200;
         this.msg ="操作成功";
-        this.data=data;
     }
 
     public void setStateMsg(StateMsg stateMsg) {

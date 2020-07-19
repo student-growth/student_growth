@@ -14,4 +14,10 @@ public class ImageDTO {
     private String name;
 
     private String path;
+
+    private String imgGroup;
+
+    public String getFullPath(){
+        return imgGroup+"/"+path;
+    }
 }

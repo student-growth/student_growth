@@ -135,8 +135,7 @@ public class StudentController {
             response.setContentType("multipart/form-data");
             response.setHeader("Content-Disposition",
                     "attachment;fileName=" + "a.jpg");
-            byte[] stream =  stuService.downloadFile("group1", "M00/00/00/rBGh4F8RP2mAFI9cAAUPnIaxxmg087.jpg",
-                    null);
+            byte[] stream =  stuService.downloadFile("group1", "M00/00/00/rBGh4F8RP2mAFI9cAAUPnIaxxmg087.jpg");
             response.getOutputStream().write(stream);
         } catch (Exception e) {
             e.printStackTrace();
