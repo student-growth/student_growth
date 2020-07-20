@@ -19,6 +19,16 @@ public class ArticleProvider {
     private static final String AUTHOR =TABLE_NAME+".author";
     private static final String FILE_NAME = TABLE_NAME+".file_name";
 
+    private static  final String SELECT= " select ";
+
+    private static StringBuilder sql = new StringBuilder();
+
+
+    private StringBuilder createSelect(String...columnName){
+        int size   =columnName.length;
+        //todo
+        return null;
+    }
 
     public String insertArticle(Map<String,Object> params){
         ArticleEntity article = (ArticleEntity)params.get("article");
@@ -42,15 +52,33 @@ public class ArticleProvider {
 
     public String selectOne(Map<String,Object> params){
         String id =(String)params.get("id");
+
         StringBuilder sql =new StringBuilder();
         sql.append("select ")
                 .append(TITLE).append(",")
-                .append(ABSTRACT).append(",")
+                .append(ABSTRACT).append(" as summary").append(",")
                 .append(AUTHOR).append(",")
                 .append(FILE_NAME).append( " as fileName")
                 .append(" from ")
                 .append(TABLE_NAME).append( " where id=").append(id)
         ;
+
+        return sql.toString();
+    }
+
+
+    public String pageSelect(Map<String,Object> params){
+        int start = (int)params.get("start");
+        int size = (int)params.get("size");
+        StringBuilder sql =new StringBuilder();
+        sql.append("select ")
+                .append(TITLE).append(",")
+                .append(ABSTRACT).append(" as summary").append(",")
+                .append(AUTHOR).append(",")
+                .append(FILE_NAME).append( " as fileName")
+                .append(" from ").append(TABLE_NAME)
+                .append(" order by modify_time desc")
+                .append( " limit ").append(start).append(",").append(size);
 
         return sql.toString();
     }

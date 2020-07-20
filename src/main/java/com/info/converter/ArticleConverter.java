@@ -2,6 +2,7 @@ package com.info.converter;
 
 import com.info.dto.ArticleDTO;
 import com.info.entity.ArticleEntity;
+import com.info.mapper.provider.ArticleProvider;
 import org.mapstruct.Mapper;
 
 /**
@@ -12,5 +13,8 @@ import org.mapstruct.Mapper;
 public interface ArticleConverter {
 
     ArticleEntity articleConve(ArticleDTO dto);
+
+
+    ArticleDTO articleEntityConve(ArticleEntity entity);
 
 }

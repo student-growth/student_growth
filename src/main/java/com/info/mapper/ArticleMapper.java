@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.SelectProvider;
 
+import java.util.List;
+
 /**
  * @author : yue
  * @Date : 2020/7/19 / 19:42
@@ -24,5 +26,8 @@ public interface ArticleMapper extends BaseMapper<ArticleEntity> {
     ArticleEntity  selectArticle(@Param("id") String id);
 
 
+    @SelectProvider(type = ArticleProvider.class ,method = "pageSelect")
+    List<ArticleEntity> selectArticleList(@Param("start") int start,
+                                          @Param("size") int size);
 
 }

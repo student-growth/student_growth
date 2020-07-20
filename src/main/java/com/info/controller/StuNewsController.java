@@ -40,11 +40,12 @@ public class StuNewsController {
         return result;
     }
 
-    @RequestMapping("/news_list")
+    @RequestMapping(value = "/news_list",method = RequestMethod.GET)
     public ReturnValue<ArticleDTO> getNewsList(@RequestParam("size") int size){
         ReturnValue<ArticleDTO> result =new ReturnValue<>();
         try{
-            //todo get news list
+            List<ArticleDTO> list = newsService.getArticleList(size);
+            result.setList(list);
         }catch (Exception e){
             result.setStateMsg(StateMsg.StateMsg_500);
             result.setSystemerrormsg(e.getMessage());

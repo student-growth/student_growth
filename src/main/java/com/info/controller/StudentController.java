@@ -35,7 +35,7 @@ public class StudentController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ReturnData<StudentInfoDto> login(@RequestBody StudentFormBean info) {
         ReturnData<StudentInfoDto> result = new ReturnData<>();
-        if (null == info || info.getId().isEmpty() || info.getPassword().isEmpty()) {
+        if (null == info) {
             result.setStateMsg(StateMsg.StateMsg_101);
             return result;
         }

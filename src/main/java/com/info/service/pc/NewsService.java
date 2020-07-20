@@ -135,4 +135,15 @@ public class NewsService {
          result.setStream(new String(buffer,"utf-8"));
         return result;
     }
+
+
+    public List<ArticleDTO> getArticleList(int size) throws SystemException{
+        List<ArticleEntity> data = articleMapper.selectArticleList(0, size);
+        if(data ==null || data.isEmpty()){
+            throw new SystemException(StateMsg.StateMsg_104);
+        }
+        return data.stream().map(item->
+            articleConverter.articleEntityConve(item))
+                .collect(Collectors.toList());
+    }
 }
