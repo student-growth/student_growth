@@ -5,6 +5,8 @@ import com.info.entity.ArticleEntity;
 import com.info.mapper.provider.ArticleProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.SelectProvider;
 
 /**
  * @author : yue
@@ -15,5 +17,12 @@ public interface ArticleMapper extends BaseMapper<ArticleEntity> {
 
     @InsertProvider(type = ArticleProvider.class,method = "insertArticle")
     int insertArticle(@Param("article") ArticleEntity entity);
+
+
+
+    @SelectProvider(type = ArticleProvider.class,method = "selectOne")
+    ArticleEntity  selectArticle(@Param("id") String id);
+
+
 
 }

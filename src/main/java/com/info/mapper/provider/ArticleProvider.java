@@ -2,8 +2,6 @@ package com.info.mapper.provider;
 
 import com.info.entity.ArticleEntity;
 import com.info.util.RandomUtil;
-import javafx.scene.control.Tab;
-import org.apache.ibatis.jdbc.SQL;
 
 import java.util.Map;
 
@@ -25,7 +23,7 @@ public class ArticleProvider {
     public String insertArticle(Map<String,Object> params){
         ArticleEntity article = (ArticleEntity)params.get("article");
         StringBuilder sql =new StringBuilder();
-        article.setId(RandomUtil.getRandomNum(6));
+        article.setId(RandomUtil.getRandomNum(8));
         sql.append("insert into ").append(TABLE_NAME).append("(")
                 .append(ID).append(",")
                 .append(TITLE).append(",")
@@ -38,6 +36,22 @@ public class ArticleProvider {
                 .append("'").append(article.getAuthor()).append("',")
                 .append("'").append(article.getFileName()).append("')")
                 ;
+        return sql.toString();
+    }
+
+
+    public String selectOne(Map<String,Object> params){
+        String id =(String)params.get("id");
+        StringBuilder sql =new StringBuilder();
+        sql.append("select ")
+                .append(TITLE).append(",")
+                .append(ABSTRACT).append(",")
+                .append(AUTHOR).append(",")
+                .append(FILE_NAME).append( " as fileName")
+                .append(" from ")
+                .append(TABLE_NAME).append( " where id=").append(id)
+        ;
+
         return sql.toString();
     }
 }

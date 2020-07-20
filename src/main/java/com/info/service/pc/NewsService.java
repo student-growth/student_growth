@@ -18,9 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,4 +109,30 @@ public class NewsService {
         imageMapper.updateModifyTime(imageId);
     }
 
+
+    public ArticleDTO getArticle(String id) throws Exception{
+        ArticleEntity entity = articleMapper.selectArticle(id);
+        if(entity==null){
+            throw new SystemException(StateMsg.StateMsg_104);
+        }
+        ArticleDTO result= new ArticleDTO();
+        result.setTitle(entity.getAuthor());
+        result.setSummary(entity.getSummary());
+        result.setAuthor(entity.getAuthor());
+        //read file disk ==> memory InputStream
+        if(entity.getFileName()==null || entity.getFileName().isEmpty()){
+            throw new SystemException(StateMsg.StateMsg_103);
+        }
+        File file = new File(articlePath + entity.getFileName());
+        if(!file.exists()){
+            throw  new SystemException(StateMsg.StateMsg_106);
+        }
+        FileInputStream inputStream = new FileInputStream(file);
+         int size = inputStream.available();
+         byte[] buffer = new byte[size];
+         inputStream.read(buffer);
+         inputStream.close();
+         result.setStream(new String(buffer,"utf-8"));
+        return result;
+    }
 }
