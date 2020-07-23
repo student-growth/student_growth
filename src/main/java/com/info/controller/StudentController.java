@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author : yue
@@ -90,19 +91,19 @@ public class StudentController {
 
     @ApiOperation("查询学生成绩")
     @RequestMapping(value = "/score", method = RequestMethod.GET)
-    public ReturnValue<ScoreDTO> getScoreById(@RequestParam("id") String id) {
-        ReturnValue<ScoreDTO> result = new ReturnValue<>();
+    public ReturnData<Map<String,List<ScoreDTO>>> getScoreById(@RequestParam("id") String id) {
+        ReturnData<Map<String,List<ScoreDTO>>> result = new ReturnData<>();
         //check param
         if (null == id || id.isEmpty()) {
             result.setStateMsg(StateMsg.StateMsg_101);
             return result;
         }
         try {
-            List<ScoreDTO> list = stuService.queryScoreById(id);
-            result.setList(list);
+            Map<String, List<ScoreDTO>> data = stuService.groupQueryScore(id);
+            result.setData(data);
             result.setStateMsg(StateMsg.StateMsg_200);
         } catch (Exception e) {
-            result.setSystemerrormsg(e.getMessage());
+            result.setSysError(e.getMessage());
             result.setStateMsg(StateMsg.StateMsg_500);
             e.printStackTrace();
         }

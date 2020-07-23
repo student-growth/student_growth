@@ -33,4 +33,10 @@ public class Return<T> {
         this.code = stateMsg.getState();
         this.msg = stateMsg.getMsg();
     }
+
+
+    public void setStateMsg(StateMsg state, String param){
+        this.code = state.getState();
+        this.msg = "["+param+"]"+state.getMsg();
+    }
 }

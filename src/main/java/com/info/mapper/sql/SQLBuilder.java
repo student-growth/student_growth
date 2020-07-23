@@ -1,4 +1,7 @@
 package com.info.mapper.sql;
+import com.info.annotation.SQLAlias;
+
+import java.lang.reflect.Field;
 
 /**
  * @author : yue 2020/7/19 / 15:08
@@ -42,6 +45,7 @@ public class SQLBuilder {
 
 
 
+
     public SQLBuilder SELECT(String...columns){
         sql.append(" select ");
         for(int i=0;i<columns.length-1;i++){
@@ -51,6 +55,37 @@ public class SQLBuilder {
         return this;
     }
 
+
+    /**
+     * `@SQLAlias
+     * use this function must add annotation to the entity,
+     * mark the sql column to the field of entity
+     * @param clazz void
+     * @param <T> void
+     * @return void
+     */
+    public <T> SQLBuilder SELECT_ALL(Class<T> clazz){
+        sql.append(" select ");
+        Field[] fields = clazz.getDeclaredFields();
+        for(int i=0;i<fields.length-1;i++){
+            SQLAlias alias = fields[i].getAnnotation(SQLAlias.class);
+            if(alias!=null){
+                sql.append(alias.name()).append(" as ")
+                        .append(fields[i].getName()).append(",");
+            }else{
+                sql.append(fields[i].getName()).append(",");
+            }
+        }
+        Field field = fields[fields.length - 1];
+        SQLAlias alias = field.getAnnotation(SQLAlias.class);
+        if(alias!=null){
+            sql.append(alias.name()).append(" as ").append(field.getName());
+        }else{
+            sql.append(field.getName());
+        }
+        return this;
+
+    }
 
     public SQLBuilder FROM(String table){
         sql.append(" from ").append(table);
@@ -83,7 +118,7 @@ public class SQLBuilder {
 
     public SQLBuilder LIMIT(int start,int size){
         sql.append( " limit ").append(start)
-                .append(",").append("size");
+                .append(",").append(size);
         return this;
     }
 
@@ -95,12 +130,6 @@ public class SQLBuilder {
     }
 
 
-    public static void main(String[] args) {
-        SQLBuilder builder = new SQLBuilder();
-        builder.INSERT_INTO("question","id","category","title","content","receiver")
-                .VALUE("123","23","124","!234","12341234");
 
-        System.out.println(builder.getSQL());
-    }
 
 }

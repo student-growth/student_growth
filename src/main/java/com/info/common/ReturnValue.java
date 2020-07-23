@@ -27,10 +27,7 @@ public class ReturnValue<T> extends Return<T> {
 
 
 
-	public void setStateMsg(StateMsg state, String param){
-		this.state = state.getState();
-		this.msg = "["+param+"]"+state.getMsg();
-	}
+
 
 
 	/**

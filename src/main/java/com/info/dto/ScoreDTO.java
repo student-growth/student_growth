@@ -17,6 +17,9 @@ public class ScoreDTO {
     @ExcelColumn(name = "课程名称")
     private String courseName;
 
+    @ExcelColumn(name = "课程类型")
+    private String courseType;
+
     @ExcelColumn(name = "期末成绩")
     private Double finalScore;
 
@@ -33,15 +36,10 @@ public class ScoreDTO {
     private Double point;
 
     @ExcelColumn(name="补考成绩")
-    private Double resetScore;
+    private Double retestScore;
 
     @ExcelColumn(name = "重修成绩")
     private Double rebuildScore;
-
-
-    public ScoreDTO(){
-        //todo get score
-    }
 
 }
 

@@ -3,7 +3,6 @@ package com.info.mapper.provider;
 import com.info.entity.QuesEntity;
 import com.info.mapper.sql.SQLBuilder;
 import com.info.util.RandomUtil;
-import org.apache.ibatis.jdbc.SQL;
 
 import java.util.Map;
 
@@ -32,5 +31,16 @@ public class QuesProvider {
                         entity.getReceiver());
 
         return SQL.getSQL();
+    }
+
+
+    public String pageSelect(Map<String,Object> params){
+        int start = (int) params.get("start");
+        int size = (int) params.get("size");
+        SQLBuilder SQL = new SQLBuilder();
+        return SQL.SELECT(CATEGORY,TITLE,CONTENT,RECEIVER)
+                .FROM(TABLE_NAME).ORDER("modify_time desc")
+                .LIMIT(start,size)
+                .getSQL();
     }
 }

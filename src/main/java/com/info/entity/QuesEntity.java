@@ -21,4 +21,5 @@ public class QuesEntity {
     private String receiver;
 
 
+
 }

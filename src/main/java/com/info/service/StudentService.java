@@ -3,7 +3,7 @@ package com.info.service;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.info.common.ReturnValue;
 import com.info.common.sysenum.StateMsg;
-import com.info.converter.StudentConverter;
+import com.info.entity.converter.Converter;
 import com.info.dto.FileDTO;
 import com.info.dto.ScoreDTO;
 import com.info.dto.StudentInfoDto;
@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -37,14 +38,17 @@ public class StudentService {
     @Resource
     private ScoreInfoMapper scoreMapper;
 
-    @Resource
-    private StudentConverter studentConverter;
-
     @Autowired
     private FastClientUtil clientUtil;
 
+
+    private Converter<ScoreEntity> scoreConverter = new Converter<>();
+
+    private Converter<Student> studentConverter = new Converter<>();
+
+
     @ApiOperation(value = "通过学号密码获取学生基本信息")
-    public StudentInfoDto getStudentInfo(String id, String password) throws SystemException{
+    public StudentInfoDto getStudentInfo(String id, String password) throws Exception{
         Student entity = studentMapper.getStudentById(id);
         if(null==entity){
             throw new SystemException(StateMsg.StateMsg_202);
@@ -53,7 +57,9 @@ public class StudentService {
         if(!entity.getPassword().equals(encryptCode)){
             throw new SystemException(StateMsg.StateMsg_203);
         }
-        return  studentConverter.stuInfoConverter(entity);
+
+        return  studentConverter.clone(entity,StudentInfoDto.class);
+
     }
 
 
@@ -99,16 +105,27 @@ public class StudentService {
 
 
     @ApiOperation("获取成绩")
-    public List<ScoreDTO> queryScoreById(String id) throws SystemException{
+    public List<ScoreDTO> queryScoreById(String id) throws Exception{
         List<ScoreEntity> scores = scoreMapper.selectScoreById(id);
         if(null==scores || scores.size()==0){
             throw new SystemException(StateMsg.StateMsg_104);
         }
         return scores.stream().map(item ->
-                studentConverter.scoreInfoConverter(item))
+                scoreConverter.clone(item,ScoreDTO.class))
                 .collect(Collectors.toList());
     }
 
+
+    public Map<String,List<ScoreDTO>> groupQueryScore(String id) throws SystemException{
+        List<ScoreEntity> scores = scoreMapper.selectScoreById(id);
+        if(null==scores || scores.size()==0){
+            throw new SystemException(StateMsg.StateMsg_104);
+        }
+
+        return scores.stream().map(item ->
+                scoreConverter.clone(item,ScoreDTO.class))
+                .collect(Collectors.groupingBy(ScoreDTO::getCourseType));
+    }
 
     /**
      * 上传学生申请的照片
