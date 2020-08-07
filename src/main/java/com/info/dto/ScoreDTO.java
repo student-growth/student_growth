@@ -17,6 +17,9 @@ public class ScoreDTO {
     @ExcelColumn(name = "课程名称")
     private String courseName;
 
+    @ExcelColumn(name = "学期")
+    private String semester;
+
     @ExcelColumn(name = "课程类型")
     private String courseType;
 

@@ -32,6 +32,11 @@ public class ScoreEntity {
      */
     private Double score;
 
+
+    private double credit;
+
+    private double point;
+
     /**
      * 平时成绩
      */

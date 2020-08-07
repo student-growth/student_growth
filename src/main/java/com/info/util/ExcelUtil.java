@@ -28,6 +28,15 @@ public class ExcelUtil {
     private  static final  String XLS = ".xls";
     private  static final  String XLSX = ".xlsx";
 
+
+    /**
+     * 导入excel
+     * @param file void
+     * @param clazz void
+     * @param <R> void
+     * @return void
+     * @throws Exception void
+     */
     public <R> List<R> importExcel(MultipartFile file, Class<R> clazz)
             throws Exception{
         Workbook workbook = getWorkbook(file);
@@ -87,12 +96,15 @@ public class ExcelUtil {
     private <R> List<R> getList(Sheet sheet, Class<R> clazz)
             throws Exception{
         List<R> result  = new ArrayList<>();
-        int rowNum = sheet.getPhysicalNumberOfRows();
+        int rowNum = sheet.getLastRowNum();
         Row title = sheet.getRow(0);
         int colNum = title.getPhysicalNumberOfCells();
         for(int i=1;i<rowNum;i++){
-            Map<String,Object> value= new HashMap<>(rowNum-1);
+            Map<String,Object> value= new HashMap<>();
             Row obj = sheet.getRow(i);
+            if (obj.getCell(0)==null){
+                break;
+            }
             for(int j=0;j<colNum;j++){
                 value.put(title.getCell(j).getStringCellValue(),
                        parseCell(obj.getCell(j)));
