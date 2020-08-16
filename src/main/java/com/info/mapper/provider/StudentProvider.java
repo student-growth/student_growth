@@ -36,7 +36,7 @@ public class StudentProvider {
             sql.append("(");
             sql.append("'").append(s.getId()).append("',");
             sql.append("'").append(s.getName()).append("',");
-            sql.append("'").append(s.getPassword()).append("',");
+            sql.append("'").append( s.getPassword()).append("',");
             sql.append("'").append(s.getDepartment()).append("',");
             sql.append("'").append(s.getMajor()).append("',");
             sql.append("'").append(s.getGrade()).append("'");
