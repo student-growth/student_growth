@@ -98,6 +98,9 @@ public class ExcelUtil {
         List<R> result  = new ArrayList<>();
         int rowNum = sheet.getLastRowNum();
         Row title = sheet.getRow(0);
+        if(title==null){
+            throw new SystemException(StateMsg.StateMsg_106);
+        }
         int colNum = title.getPhysicalNumberOfCells();
         for(int i=1;i<rowNum;i++){
             Map<String,Object> value= new HashMap<>();

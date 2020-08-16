@@ -22,15 +22,21 @@ public class StudentProvider {
         }.toString();
     }
 
+    /**
+     * 批量导入学生信息
+     * @param params 学生列表
+     * @return 插入结果
+     */
     public String batchInsert(Map<String,Object> params){
         List<Student> students =(List<Student>) params.get("list");
         StringBuilder sql = new StringBuilder("insert into student");
-        sql.append("(id,name,department,major,grade)");
+        sql.append("(id,name,password,department,major,grade)");
         sql.append("VALUES");
         for(Student s : students){
             sql.append("(");
             sql.append("'").append(s.getId()).append("',");
             sql.append("'").append(s.getName()).append("',");
+            sql.append("'").append(s.getPassword()).append("',");
             sql.append("'").append(s.getDepartment()).append("',");
             sql.append("'").append(s.getMajor()).append("',");
             sql.append("'").append(s.getGrade()).append("'");

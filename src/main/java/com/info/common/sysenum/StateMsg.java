@@ -18,6 +18,7 @@ public enum  StateMsg {
     StateMsg_104(104,"查询数据为空"),
     StateMsg_105(105,"文件上传失败"),
     StateMsg_106(106,"文件不存在"),
+    StateMsg_107(107,"Excel文件标题出现错误"),
 
     StateMsg_202(202,"学号错误或密码错误"),
     StateMsg_203(203,"输入密码错误"),
