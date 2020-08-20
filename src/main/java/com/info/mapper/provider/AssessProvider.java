@@ -44,7 +44,7 @@ public class AssessProvider {
 
 
     public String updateByPrimary(Map<String,Object> param){
-        AssessEntity entity  =  (AssessEntity) param.get("entity");
+        AssessEntity entity = (AssessEntity) param.get("entity");
         SQLBuilder sql = new SQLBuilder();
         sql.UPDATE(TABLE_NAME)
                 .SET("psy="+entity.getPsy(),"moral="+entity.getMoral(),
