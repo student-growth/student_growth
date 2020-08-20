@@ -48,6 +48,10 @@ public class SQLBuilder {
 
     public SQLBuilder SELECT(String...columns){
         sql.append(" select ");
+        if(columns.length==1){
+            sql.append(columns[0]);
+            return this;
+        }
         for(int i=0;i<columns.length-1;i++){
             sql.append(columns[i]).append(",");
         }
@@ -84,8 +88,22 @@ public class SQLBuilder {
             sql.append(field.getName());
         }
         return this;
-
     }
+
+    public SQLBuilder UPDATE(String tableName){
+        sql.append("UPDATE ").append(tableName);
+        return this;
+    }
+
+    public SQLBuilder SET(String ... condition){
+        sql.append(" SET ");
+        for(int i=0;i<condition.length-1;i++){
+            sql.append(condition[i]).append(",");
+        }
+        sql.append(condition[condition.length-1]);
+        return this;
+    }
+
 
     public SQLBuilder FROM(String table){
         sql.append(" from ").append(table);
@@ -128,8 +146,4 @@ public class SQLBuilder {
         sql.append(";");
         return this.sql.toString();
     }
-
-
-
-
 }

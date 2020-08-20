@@ -27,6 +27,9 @@ public enum  StateMsg {
     StateMsg_303(303,"数据库操作失败"),
 
 
+    StateMsg_401(401,"学号为空"),
+
+
     StateMsg_500(500,"操作失败")
     ;
 

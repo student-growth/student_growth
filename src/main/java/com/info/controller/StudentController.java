@@ -7,6 +7,7 @@ import com.info.dto.FileDTO;
 import com.info.dto.ScoreDTO;
 import com.info.dto.StudentInfoDto;
 import com.info.entity.Student;
+import com.info.formbean.CommentFormBean;
 import com.info.formbean.PageBean;
 import com.info.formbean.StudentFormBean;
 import com.info.service.StudentService;
@@ -51,7 +52,6 @@ public class StudentController {
         }
         return result;
     }
-
 
     @ApiOperation("修改密码")
     @RequestMapping(value = "/modifyPwd", method = RequestMethod.POST)
@@ -129,8 +129,7 @@ public class StudentController {
 
     //@RequestBody FileDTO fileInfo,
     @RequestMapping(value = "/download",method = RequestMethod.GET)
-    public void downloadFile(
-                             HttpServletResponse response) {
+    public void downloadFile(HttpServletResponse response) {
         //todo 添加前端传来的参数  /usr/include/fastdfs /usr/include/fastcommon
         try {
             response.setContentType("multipart/form-data");
@@ -141,7 +140,22 @@ public class StudentController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    @RequestMapping(value = "/comment",method = RequestMethod.POST)
+    public ReturnData<String> comment(@RequestBody CommentFormBean info){
+        ReturnData<String>  result = new ReturnData<>();
+
+        try{
+            String data = stuService.assess(info.getId(), info.getOther(),
+                    info.getPsychology(), info.getMoral());
+            result.setData(data);
+        }catch (Exception e){
+            result.setStateMsg(StateMsg.StateMsg_500);
+            result.setSysError(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }
