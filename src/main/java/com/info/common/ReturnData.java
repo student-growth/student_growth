@@ -20,4 +20,6 @@ public class ReturnData<T> extends Return<T> {
     public ReturnData(T data){
         super(data);
     }
+
+
 }

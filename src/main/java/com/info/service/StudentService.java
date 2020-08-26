@@ -2,25 +2,17 @@ package com.info.service;
 
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.info.common.ReturnValue;
+import com.info.common.sysenum.ApplyEnum;
 import com.info.common.sysenum.StateMsg;
-import com.info.entity.AssessEntity;
+import com.info.dto.*;
+import com.info.entity.*;
 import com.info.entity.converter.Converter;
-import com.info.dto.FileDTO;
-import com.info.dto.ScoreDTO;
-import com.info.dto.StudentInfoDto;
-import com.info.entity.ImageEntity;
-import com.info.entity.ScoreEntity;
-import com.info.entity.Student;
 import com.info.exception.SystemException;
 import com.info.formbean.PageBean;
-import com.info.mapper.AssessMapper;
-import com.info.mapper.ScoreInfoMapper;
-import com.info.mapper.StudentInfoMapper;
+import com.info.mapper.*;
 import com.info.util.EncryptUtil;
 import com.info.util.FastClientUtil;
 import io.swagger.annotations.ApiOperation;
-import jdk.jfr.events.ThrowablesEvent;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,10 +40,18 @@ public class StudentService {
     @Autowired
     private FastClientUtil clientUtil;
 
+    @Autowired
+    private ApplyProjectMapper applyProjectMapper;
+    
+    
+    @Autowired
+    private ApplyMapper applyMapper;
 
     private Converter<ScoreEntity> scoreConverter = new Converter<>();
 
     private Converter<Student> studentConverter = new Converter<>();
+
+    private Converter<ApplyProjectEntity> applyEntityConverter = new Converter<>();
 
 
     @ApiOperation(value = "通过学号密码获取学生基本信息")
@@ -133,11 +133,11 @@ public class StudentService {
     }
 
     /**
-     * 上传学生申请的照片
+     * 上传学生照片
      *
      * @param file image
      * @param id   student_id
-     * @return void
+     * @return     void
      * @throws Exception void
      */
     public FileDTO uploadFile(MultipartFile file, String id) throws Exception {
@@ -173,6 +173,59 @@ public class StudentService {
         return res==1?StateMsg.StateMsg_200.getMsg():StateMsg.StateMsg_500.getMsg();
     }
 
+
+    public Map<String,List<ApplyProjectDTO>> getApplyList(String sort) throws Exception{
+        List<ApplyProjectEntity> entities = applyProjectMapper.selectAll(sort);
+        if(entities==null){
+            throw new SystemException(StateMsg.StateMsg_104);
+        }
+        return entities.stream().map(item ->
+                applyEntityConverter.clone(item, ApplyProjectDTO.class))
+                .collect(Collectors.groupingBy(ApplyProjectDTO::getMenuName));
+    }
+
+    //提交申请
+    public String submitApply(ApplyDTO applyDTO,MultipartFile file)
+            throws Exception{
+
+        StorePath upload = clientUtil.upload(file);
+        String imgPath = upload.getGroup()+"/"+upload.getPath();
+
+        ApplyEntity entity  = new ApplyEntity();
+        entity.setStudentId(applyDTO.getStudentId());
+        entity.setApplyId(applyDTO.getApplyId());
+        entity.setFormData(applyDTO.getFormData());
+        entity.setImage(imgPath);
+        entity.setApplyState(ApplyEnum.APPLYING.name());
+        Integer insert = applyMapper.insert(entity);
+        return insert==1?StateMsg.StateMsg_200.getMsg():StateMsg.StateMsg_500.getMsg();
+    }
+
+
+
+    //获取进度列表
+    public List<ApplyDTO> getProcessList(String studentId)
+            throws Exception{
+        List<ApplyEntity> entities = applyMapper.selectApplyInfo(studentId);
+        if(entities==null || entities.isEmpty()){
+            throw new SystemException(StateMsg.StateMsg_104);
+        }
+        return entities.stream().map(item -> {
+            ApplyDTO applyDTO = new ApplyDTO();
+            applyDTO.setApplyName(item.getApplyName());
+            applyDTO.setFormData(item.getFormData());
+            applyDTO.setFormTemp(item.getFormTemp());
+            applyDTO.setImage(item.getImage());
+            applyDTO.setApplyState(item.getApplyState());
+            return applyDTO;
+        }).collect(Collectors.toList());
+
+    }
+
+
+    public String getFormTemp(String menuId) throws  Exception{
+        return applyProjectMapper.selectFormTemp(menuId);
+    }
 
     public byte[] downloadFile(String group, String path)
             throws Exception {
