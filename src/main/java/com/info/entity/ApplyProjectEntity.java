@@ -7,6 +7,7 @@ import lombok.Value;
 /**
  * @author : yue
  * @Date : 2020/8/22 / 22:13
+ * apply_project
  */
 @Data
 public class ApplyProjectEntity {
@@ -21,6 +22,8 @@ public class ApplyProjectEntity {
     private String menuName;
 
     private String name;
+
+    private String abbreviation;
 
 
 }

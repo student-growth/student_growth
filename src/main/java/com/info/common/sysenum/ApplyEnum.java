@@ -8,7 +8,8 @@ public enum ApplyEnum {
 
     APPLYING("001","applying"),
     PASS("002","pass"),
-    REFUSED("003","refused")
+    REFUSED("003","refused"),
+    CANCEL("004","cancel")
     ;
 
 

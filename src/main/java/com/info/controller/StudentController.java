@@ -7,14 +7,17 @@ import com.info.dto.*;
 import com.info.entity.Student;
 import com.info.formbean.CommentFormBean;
 import com.info.formbean.PageBean;
+import com.info.formbean.ProcessFormBean;
 import com.info.formbean.StudentFormBean;
 import com.info.service.StudentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.session.RedisSessionProperties;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Service;
 import java.util.List;
 import java.util.Map;
 
@@ -179,28 +182,13 @@ public class StudentController {
     }
 
 
-    //获取申请列表表单
-    @RequestMapping(value = "/applyList", method = RequestMethod.GET)
-    public ReturnData<Map<String, List<ApplyProjectDTO>>> getApplyMenu(
-            @RequestParam("sort") String sort) {
-        ReturnData<Map<String, List<ApplyProjectDTO>>> result = new ReturnData<>();
-        try {
-            Map<String, List<ApplyProjectDTO>> data = stuService.getApplyList(sort);
-            result.setData(data);
-        } catch (Exception e) {
-            result.setStateMsg(StateMsg.StateMsg_500);
-            result.setSysError(e.getMessage());
-            e.printStackTrace();
-        }
-        return result;
-    }
 
-    @RequestMapping(value = "/getFormTemp", method = RequestMethod.GET)
-    public ReturnData<String> getFormTemp(@RequestParam("menuId") String menuId) {
-        ReturnData<String> result = new ReturnData<>();
+    @RequestMapping(value = "/getProcessList",method = RequestMethod.POST)
+    public ReturnValue<ApplyDTO> getProcessList(@RequestBody ProcessFormBean bean){
+        ReturnValue<ApplyDTO> result =new ReturnValue<>();
         try{
-            String data = stuService.getFormTemp(menuId);
-            result.setData(data);
+            List<ApplyDTO> data = stuService.getProcessList(bean);
+            result.setList(data);
         }catch (Exception e){
             result.setSysError(e.getMessage());
             result.setStateMsg(StateMsg.StateMsg_500);
@@ -208,14 +196,13 @@ public class StudentController {
         }
         return result;
     }
-
-
-    @RequestMapping(value = "/getProcessList",method = RequestMethod.GET)
-    public ReturnValue<ApplyDTO> getProcessList(@RequestParam("studentId") String studentId){
-        ReturnValue<ApplyDTO> result =new ReturnValue<>();
+    //查询四六级成绩
+    @RequestMapping(value = "/getCETScore",method = RequestMethod.GET)
+    public ReturnData<Map<String,List<CETScoreDTO>>> getCETScore(@RequestParam("id") String id){
+        ReturnData<Map<String,List<CETScoreDTO>>> result =new  ReturnData<>();
         try{
-            List<ApplyDTO> data = stuService.getProcessList(studentId);
-            result.setList(data);
+            Map<String, List<CETScoreDTO>> allCETScore = stuService.getAllCETScore(id);
+            result.setData(allCETScore);
         }catch (Exception e){
             result.setSysError(e.getMessage());
             result.setStateMsg(StateMsg.StateMsg_500);

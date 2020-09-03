@@ -58,10 +58,16 @@ public class Converter<T> {
 
 
     private String createSetMethod(Field field) {
+        if(field.getType()==boolean.class){
+            return "set"+field.getName().substring(2);
+        }
         return "set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
     }
 
     private String createGetMethod(Field field) {
+        if(field.getType()==boolean.class){
+            return field.getName();
+        }
         return "get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
     }
 }

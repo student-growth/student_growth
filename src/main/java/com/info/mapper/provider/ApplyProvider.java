@@ -38,6 +38,10 @@ public class ApplyProvider {
                 "form_temp as formTemp,form_data as formData,image,apply_state as applyState")
         .append(" from apply")
         .append(" where student_id='").append(studentId).append("'");
+        if(params.get("state")!=null){
+            String state = (String) params.get("state");
+            sql.append(" and apply_state='").append(state).append("'");
+        }
 
         return sql.toString();
     }

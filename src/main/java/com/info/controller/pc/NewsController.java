@@ -45,7 +45,7 @@ public class NewsController {
     @Autowired
     private NewsService newsService;
 
-    @ApiOperation("上传图片")
+
     @RequestMapping("/upload")
     public ReturnData<String> uploadFile(@RequestParam("file") MultipartFile file) {
         ReturnData<String> result = new ReturnData<>();

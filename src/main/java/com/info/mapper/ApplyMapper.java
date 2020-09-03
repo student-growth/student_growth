@@ -21,4 +21,8 @@ public interface ApplyMapper extends BaseMapper<ApplyEntity> {
     @SelectProvider(type = com.info.mapper.provider.ApplyProvider.class,
             method = "selectApplyInfo")
     List<ApplyEntity> selectApplyInfo(@Param("studentId") String studentId);
+
+    @SelectProvider(type = com.info.mapper.provider.ApplyProvider.class,
+            method = "selectApplyInfo")
+    List<ApplyEntity> selectApplyByState(@Param("studentId") String id,@Param("state") String state);
 }

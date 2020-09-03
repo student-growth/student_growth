@@ -18,7 +18,7 @@ import java.util.List;
  * 小程序端 --新闻界面
  */
 @RestController
-@RequestMapping("/stu_news")
+    @RequestMapping("/stu_news")
 public class StuNewsController {
 
 

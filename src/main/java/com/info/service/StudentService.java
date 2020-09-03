@@ -9,6 +9,7 @@ import com.info.entity.*;
 import com.info.entity.converter.Converter;
 import com.info.exception.SystemException;
 import com.info.formbean.PageBean;
+import com.info.formbean.ProcessFormBean;
 import com.info.mapper.*;
 import com.info.util.EncryptUtil;
 import com.info.util.FastClientUtil;
@@ -42,16 +43,20 @@ public class StudentService {
 
     @Autowired
     private ApplyProjectMapper applyProjectMapper;
-    
-    
+
     @Autowired
     private ApplyMapper applyMapper;
+
+    @Autowired
+    private CETScoreMapper cetScoreMapper;
 
     private Converter<ScoreEntity> scoreConverter = new Converter<>();
 
     private Converter<Student> studentConverter = new Converter<>();
 
     private Converter<ApplyProjectEntity> applyEntityConverter = new Converter<>();
+
+    private Converter<CETScoreEntity> cetScoreConverter = new Converter<>();
 
 
     @ApiOperation(value = "通过学号密码获取学生基本信息")
@@ -137,7 +142,7 @@ public class StudentService {
      *
      * @param file image
      * @param id   student_id
-     * @return     void
+     * @return void
      * @throws Exception void
      */
     public FileDTO uploadFile(MultipartFile file, String id) throws Exception {
@@ -165,18 +170,18 @@ public class StudentService {
         }
         //如果数据已经存在，则更新数据
         AssessEntity entity = new AssessEntity(id, other, psy, moral);
-        if(assessMapper.selectByPrimary(id, other)!=null){
+        if (assessMapper.selectByPrimary(id, other) != null) {
             int res = assessMapper.update(entity);
-            return res==1?StateMsg.StateMsg_200.getMsg():StateMsg.StateMsg_500.getMsg();
+            return res == 1 ? StateMsg.StateMsg_200.getMsg() : StateMsg.StateMsg_500.getMsg();
         }
         Integer res = assessMapper.insert(entity);
-        return res==1?StateMsg.StateMsg_200.getMsg():StateMsg.StateMsg_500.getMsg();
+        return res == 1 ? StateMsg.StateMsg_200.getMsg() : StateMsg.StateMsg_500.getMsg();
     }
 
 
-    public Map<String,List<ApplyProjectDTO>> getApplyList(String sort) throws Exception{
+    public Map<String, List<ApplyProjectDTO>> getApplyList(String sort) throws Exception {
         List<ApplyProjectEntity> entities = applyProjectMapper.selectAll(sort);
-        if(entities==null){
+        if (entities == null) {
             throw new SystemException(StateMsg.StateMsg_104);
         }
         return entities.stream().map(item ->
@@ -185,30 +190,48 @@ public class StudentService {
     }
 
     //提交申请
-    public String submitApply(ApplyDTO applyDTO,MultipartFile file)
-            throws Exception{
+    public String submitApply(ApplyDTO applyDTO, MultipartFile file)
+            throws Exception {
 
         StorePath upload = clientUtil.upload(file);
-        String imgPath = upload.getGroup()+"/"+upload.getPath();
+        String imgPath = upload.getGroup() + "/" + upload.getPath();
 
-        ApplyEntity entity  = new ApplyEntity();
+        ApplyEntity entity = new ApplyEntity();
         entity.setStudentId(applyDTO.getStudentId());
         entity.setApplyId(applyDTO.getApplyId());
         entity.setFormData(applyDTO.getFormData());
+        entity.setFormTemp(applyDTO.getFormTemp());
         entity.setImage(imgPath);
         entity.setApplyState(ApplyEnum.APPLYING.name());
         Integer insert = applyMapper.insert(entity);
-        return insert==1?StateMsg.StateMsg_200.getMsg():StateMsg.StateMsg_500.getMsg();
+        return insert == 1 ? StateMsg.StateMsg_200.getMsg() : StateMsg.StateMsg_500.getMsg();
     }
 
 
+    public Map<String, List<CETScoreDTO>> getAllCETScore(String id) throws Exception {
+        List<CETScoreEntity> cet = cetScoreMapper.selectByIdAndType(id);
+
+        if (cet == null) {
+            throw new SystemException(StateMsg.StateMsg_104);
+        }
+
+        return cet.stream()
+                .map(item -> cetScoreConverter.clone(item, CETScoreDTO.class))
+                .collect(Collectors.groupingBy(CETScoreDTO::getCetLevel));
+    }
+
 
     //获取进度列表
-    public List<ApplyDTO> getProcessList(String studentId)
-            throws Exception{
-        List<ApplyEntity> entities = applyMapper.selectApplyInfo(studentId);
-        if(entities==null || entities.isEmpty()){
-            throw new SystemException(StateMsg.StateMsg_104);
+    public List<ApplyDTO> getProcessList(ProcessFormBean formBean)
+            throws Exception {
+        List<ApplyEntity> entities ;
+        if (formBean.getState() == null) {
+            entities = applyMapper.selectApplyInfo(formBean.getStudentId());
+        } else {
+            entities = applyMapper.selectApplyByState(formBean.getStudentId(), formBean.getState());
+        }
+        if (entities == null || entities.isEmpty()) {
+            return  null;
         }
         return entities.stream().map(item -> {
             ApplyDTO applyDTO = new ApplyDTO();
@@ -223,7 +246,7 @@ public class StudentService {
     }
 
 
-    public String getFormTemp(String menuId) throws  Exception{
+    public String getFormTemp(String menuId) throws Exception {
         return applyProjectMapper.selectFormTemp(menuId);
     }
 
