@@ -66,10 +66,11 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/getFormTemp", method = RequestMethod.GET)
-    public ReturnData<String> getFormTemp(@RequestParam("menuId") String menuId) {
+    public ReturnData<String> getFormTemp(@RequestParam("menuId") String menuId,
+                                          @RequestParam("projectId") String projectId) {
         ReturnData<String> result = new ReturnData<>();
         try{
-            String data = stuService.getFormTemp(menuId);
+            String data = stuService.getFormTemp(menuId,projectId);
             result.setData(data);
         }catch (Exception e){
             result.setSysError(e.getMessage());

@@ -5,19 +5,15 @@ import com.info.common.ReturnValue;
 import com.info.common.sysenum.StateMsg;
 import com.info.dto.*;
 import com.info.entity.Student;
-import com.info.formbean.CommentFormBean;
-import com.info.formbean.PageBean;
-import com.info.formbean.ProcessFormBean;
-import com.info.formbean.StudentFormBean;
+import com.info.formbean.*;
+import com.info.service.CommentService;
 import com.info.service.StudentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.session.RedisSessionProperties;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Service;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +27,10 @@ public class StudentController {
 
     @Autowired
     private StudentService stuService;
+
+
+    @Autowired
+    private CommentService commentService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ReturnData<StudentInfoDto> login(@RequestBody StudentFormBean info) {
@@ -89,7 +89,8 @@ public class StudentController {
 
     @ApiOperation("查询学生成绩")
     @RequestMapping(value = "/score", method = RequestMethod.GET)
-    public ReturnData<Map<String, List<ScoreDTO>>> getScoreById(@RequestParam("id") String id) {
+    public ReturnData<Map<String, List<ScoreDTO>>> getScoreById(@RequestParam("id") String id,
+                                                                @RequestParam("semester") String semester) {
         ReturnData<Map<String, List<ScoreDTO>>> result = new ReturnData<>();
         //check param
         if (null == id || id.isEmpty()) {
@@ -97,7 +98,7 @@ public class StudentController {
             return result;
         }
         try {
-            Map<String, List<ScoreDTO>> data = stuService.groupQueryScore(id);
+            Map<String, List<ScoreDTO>> data = stuService.groupQueryScore(id,semester);
             result.setData(data);
             result.setStateMsg(StateMsg.StateMsg_200);
         } catch (Exception e) {
@@ -124,31 +125,6 @@ public class StudentController {
         return result;
     }
 
-    //提交申请
-    @RequestMapping(value = "/submitApply",method = RequestMethod.POST)
-    public ReturnData<String> submitApply(@RequestParam("file") MultipartFile file,
-                                          @RequestParam("formData") String formData,
-                                          @RequestParam("userId") String userId,
-                                          @RequestParam("applyId") String applyId,
-                                          @RequestParam("formTemp") String formTemp){
-        ReturnData<String> result = new ReturnData<>();
-        try{
-            ApplyDTO applyDTO = new ApplyDTO();
-            applyDTO.setApplyId(applyId);
-            applyDTO.setStudentId(userId);
-            applyDTO.setFormData(formData);
-            applyDTO.setFormTemp(formTemp);
-            String data = stuService.submitApply(applyDTO, file);
-            result.setData(data);
-
-        }catch (Exception e){
-            result.setStateMsg(StateMsg.StateMsg_500);
-            result.setSysError(e.getMessage());
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     //@RequestBody FileDTO fileInfo,
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public void downloadFile(HttpServletResponse response) {
@@ -165,17 +141,32 @@ public class StudentController {
     }
 
 
-    //学生评价
+    //学生评价-包含自我评价和学生互评
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     public ReturnData<String> comment(@RequestBody CommentFormBean info) {
         ReturnData<String> result = new ReturnData<>();
         try {
-            String data = stuService.assess(info.getId(), info.getOther(),
+            String data = commentService.assess(info.getId(), info.getOther(),
                     info.getPsychology(), info.getMoral());
             result.setData(data);
         } catch (Exception e) {
             result.setStateMsg(StateMsg.StateMsg_500);
             result.setSysError(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //获取当前学年的评价分数
+    @RequestMapping(value = "/getCommentScore",method = RequestMethod.GET)
+    public ReturnValue<AssessDTO> getScore(@RequestParam("id") String id){
+        ReturnValue<AssessDTO> result = new ReturnValue<>();
+        try{
+            List<AssessDTO> data = commentService.getCommentScore(id);
+            result.setList(data);
+        }catch (Exception e){
+            result.setSysError(e.getMessage());
+            result.setStateMsg(StateMsg.StateMsg_500);
             e.printStackTrace();
         }
         return result;
@@ -196,19 +187,25 @@ public class StudentController {
         }
         return result;
     }
-    //查询四六级成绩
-    @RequestMapping(value = "/getCETScore",method = RequestMethod.GET)
-    public ReturnData<Map<String,List<CETScoreDTO>>> getCETScore(@RequestParam("id") String id){
-        ReturnData<Map<String,List<CETScoreDTO>>> result =new  ReturnData<>();
-        try{
-            Map<String, List<CETScoreDTO>> allCETScore = stuService.getAllCETScore(id);
-            result.setData(allCETScore);
-        }catch (Exception e){
-            result.setSysError(e.getMessage());
-            result.setStateMsg(StateMsg.StateMsg_500);
-            e.printStackTrace();
-        }
-        return result;
-    }
+
+
+
+//    //查询四六级成绩
+//    @RequestMapping(value = "/getCETScore",method = RequestMethod.GET)
+//    public ReturnData<Map<String,List<CETScoreDTO>>> getCETScore(@RequestParam("id") String id){
+//        ReturnData<Map<String,List<CETScoreDTO>>> result =new  ReturnData<>();
+//        try{
+//            Map<String, List<CETScoreDTO>> allCETScore = stuService.getAllCETScore(id);
+//            result.setData(allCETScore);
+//        }catch (Exception e){
+//            result.setSysError(e.getMessage());
+//            result.setStateMsg(StateMsg.StateMsg_500);
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
+
+
+
 
 }

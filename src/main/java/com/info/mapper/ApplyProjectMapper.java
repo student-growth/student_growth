@@ -20,8 +20,13 @@ public interface ApplyProjectMapper extends BaseMapper<ApplyProjectEntity>{
 
 
     @SelectProvider(type = ApplyProjectProvider.class,
-    method = "selectFormTemp")
+    method = "selectFormTempInMenu")
     String selectFormTemp(@Param("menuId") String menuId);
+
+
+    @SelectProvider(type = ApplyProjectProvider.class,
+            method = "selectFormTempInProject")
+    String selectTempInProject(@Param("projectId") String projectId);
 
 
     @SelectProvider(type = ApplyProjectProvider.class,method = "fuzzySelect")

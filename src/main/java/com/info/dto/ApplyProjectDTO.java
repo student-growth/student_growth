@@ -17,7 +17,8 @@ public class ApplyProjectDTO {
 
     private String menuName;
 
+    private String name;
+
     private String abbreviation;
 
-    private String name;
 }

@@ -11,8 +11,10 @@ import com.info.exception.SystemException;
 import com.info.formbean.PageBean;
 import com.info.formbean.ProcessFormBean;
 import com.info.mapper.*;
+import com.info.util.DateUtil;
 import com.info.util.EncryptUtil;
 import com.info.util.FastClientUtil;
+import com.info.util.RandomUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,7 +92,15 @@ public class StudentService {
         return StateMsg.StateMsg_200.getMsg();
     }
 
-    @ApiOperation(value = "分页查询学生信息")
+    public List<StudentInfoDto> getStudentList(String id,String grade){
+
+        List<Student> students = studentMapper.selectStudents(id, grade);
+        return students.stream().map(item->
+            studentConverter.clone(item,StudentInfoDto.class))
+                .collect(Collectors.toList());
+    }
+
+
     public ReturnValue<Student> getStudentList(PageBean page)
             throws SystemException {
         if (page.getCurrentPage() <= 0) {
@@ -102,6 +112,7 @@ public class StudentService {
         result.setList(students);
         return result;
     }
+
 
     @ApiOperation("修改密码")
     public String changePassword(String id, String oldPassword)
@@ -126,10 +137,17 @@ public class StudentService {
     }
 
 
-    public Map<String, List<ScoreDTO>> groupQueryScore(String id) throws SystemException {
-        List<ScoreEntity> scores = scoreMapper.selectScoreById(id);
+
+    public Map<String, List<ScoreDTO>> groupQueryScore(String id,String semester)
+            throws SystemException {
+        List<ScoreEntity> scores;
+        if(semester!=null){
+            scores = scoreMapper.selectScoreWithSemester(id,semester);
+        }else{
+            scores = scoreMapper.selectScoreById(id);
+        }
         if (null == scores || scores.size() == 0) {
-            throw new SystemException(StateMsg.StateMsg_104);
+            return null;
         }
 
         return scores.stream().map(item ->
@@ -156,29 +174,6 @@ public class StudentService {
         return res;
     }
 
-    /**
-     * 学生评估分数
-     *
-     * @param id    学号
-     * @param psy   心理成绩
-     * @param moral 品德成绩
-     * @return void
-     */
-    public String assess(String id, String other, int psy, int moral) throws Exception {
-        if (psy > 100 || moral > 100 || psy < 0 || moral < 0) {
-            throw new SystemException(StateMsg.StateMsg_101);
-        }
-        //如果数据已经存在，则更新数据
-        AssessEntity entity = new AssessEntity(id, other, psy, moral);
-        if (assessMapper.selectByPrimary(id, other) != null) {
-            int res = assessMapper.update(entity);
-            return res == 1 ? StateMsg.StateMsg_200.getMsg() : StateMsg.StateMsg_500.getMsg();
-        }
-        Integer res = assessMapper.insert(entity);
-        return res == 1 ? StateMsg.StateMsg_200.getMsg() : StateMsg.StateMsg_500.getMsg();
-    }
-
-
     public Map<String, List<ApplyProjectDTO>> getApplyList(String sort) throws Exception {
         List<ApplyProjectEntity> entities = applyProjectMapper.selectAll(sort);
         if (entities == null) {
@@ -195,14 +190,17 @@ public class StudentService {
 
         StorePath upload = clientUtil.upload(file);
         String imgPath = upload.getGroup() + "/" + upload.getPath();
-
+        String id = RandomUtil.getRandomStr(20);
         ApplyEntity entity = new ApplyEntity();
+        entity.setId(id);
         entity.setStudentId(applyDTO.getStudentId());
         entity.setApplyId(applyDTO.getApplyId());
+        entity.setApplyName(applyDTO.getApplyName());
         entity.setFormData(applyDTO.getFormData());
         entity.setFormTemp(applyDTO.getFormTemp());
         entity.setImage(imgPath);
         entity.setApplyState(ApplyEnum.APPLYING.name());
+
         Integer insert = applyMapper.insert(entity);
         return insert == 1 ? StateMsg.StateMsg_200.getMsg() : StateMsg.StateMsg_500.getMsg();
     }
@@ -235,6 +233,8 @@ public class StudentService {
         }
         return entities.stream().map(item -> {
             ApplyDTO applyDTO = new ApplyDTO();
+            applyDTO.setId(item.getId());
+
             applyDTO.setApplyName(item.getApplyName());
             applyDTO.setFormData(item.getFormData());
             applyDTO.setFormTemp(item.getFormTemp());
@@ -246,8 +246,12 @@ public class StudentService {
     }
 
 
-    public String getFormTemp(String menuId) throws Exception {
-        return applyProjectMapper.selectFormTemp(menuId);
+    public String getFormTemp(String menuId,String projectId) throws Exception {
+        String formTemp = applyProjectMapper.selectFormTemp(menuId);
+        if(formTemp==null || formTemp.equals("")){
+            formTemp= applyProjectMapper.selectTempInProject(projectId);
+        }
+        return formTemp;
     }
 
     public byte[] downloadFile(String group, String path)

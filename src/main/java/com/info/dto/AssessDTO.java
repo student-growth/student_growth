@@ -16,4 +16,6 @@ public class AssessDTO {
     private int psy;
 
     private int moral;
+
+    private String semester;
 }

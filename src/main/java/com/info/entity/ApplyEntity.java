@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class ApplyEntity {
 
+    private String id;
+
     private String studentId;
 
     private String applyId;
@@ -25,5 +27,10 @@ public class ApplyEntity {
      * 申请状态
      */
     private String applyState;
+
+    /**
+     * 人工审核后的批注
+     */
+    private String remarks;
 
 }

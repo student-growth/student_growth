@@ -18,11 +18,14 @@ public class ScoreEntity {
     @SQLAlias(name = "course_id")
     private String courseId;
 
-    @SQLAlias(name = "course_name")
-    private String courseName;
+    @SQLAlias(name = "class_id")
+    private String classId;
 
     @SQLAlias(name = "course_type")
     private String courseType;
+
+    @SQLAlias(name = "course_name")
+    private String courseName;
 
 
     private String semester;
@@ -30,29 +33,29 @@ public class ScoreEntity {
     /**
      * 最总折算成绩
      */
-    private Double score;
+    private String score;
 
 
-    private double credit;
+    private String credit;
 
-    private double point;
+    private String point;
 
     /**
      * 平时成绩
      */
     @SQLAlias(name="daily_score")
-    private Double dailyScore;
+    private String dailyScore;
 
     /**
      * 期末成绩
      */
     @SQLAlias(name = "final_score")
-    private Double finalScore;
+    private String finalScore;
 
     @SQLAlias(name = "rebuild_score")
-    private Double rebuildScore;
+    private String rebuildScore;
 
     @SQLAlias(name = "retest_score")
-    private Double retestScore;
+    private String retestScore;
 
 }

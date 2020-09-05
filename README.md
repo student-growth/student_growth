@@ -13,3 +13,9 @@
 * apply_project_menu
 备注：品德纪实，列表项未录入，暂时存在问题
 
+
+## 待删除的测试图片
+- group1/M00/00/00/rBGh4F9SMraAfJwLACRN7w8qqKQ624.png
+
+
+

@@ -15,6 +15,6 @@ public class EncryptUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(encryptMD5("161105010"));
+        System.out.println(encryptMD5("1611060101"));
     }
 }

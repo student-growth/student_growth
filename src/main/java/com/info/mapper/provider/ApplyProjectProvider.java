@@ -35,14 +35,23 @@ public class ApplyProjectProvider {
     }
 
 
-    public String selectFormTemp(Map<String,Object> params){
+    public String selectFormTempInMenu(Map<String,Object> params){
         String menuId = (String)params.get("menuId");
         StringBuilder sql  = new StringBuilder();
-        sql.append("select form_temp from apply_project_menu where id="+
-                menuId+"");
+        sql.append("select form_temp")
+                .append(" from apply_project_menu")
+                .append(" where id='").append(menuId).append("'");
         return sql.toString();
     }
 
+    public String selectFormTempInProject(Map<String,Object> params){
+        String projectId = (String) params.get("projectId");
+        StringBuilder sql = new StringBuilder();
+        sql.append("select form_temp from apply_project where id="+
+                projectId+"");
+
+        return sql.toString();
+    }
     /**
      * 模糊查询
      * @param param
@@ -51,11 +60,13 @@ public class ApplyProjectProvider {
     public String fuzzySelect(Map<String,Object> param){
         String keyword = (String) param.get("keyword");
         StringBuilder sql = new StringBuilder();
-        sql.append("select id, menu_id as menuName, name, abbreviation")
+        sql.append("select id, menu_id as menuId, name, abbreviation")
                 .append(" from apply_project")
                 .append(" where name like")
                 .append("'%").append(keyword).append("%'");
 
         return sql.toString();
     }
+
+
 }

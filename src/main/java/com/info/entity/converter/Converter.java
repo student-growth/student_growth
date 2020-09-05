@@ -18,10 +18,12 @@ public class Converter<T> {
     /**
      * entity converter
      *
-     * 用于做复杂的实体类克隆
+     * 用于做复杂的深度实体类克隆
      * @param entity entity object
      * @param <R>    void
      * @return void
+     * clone : entity ===> other class
+     *
      */
     public <R> R clone(T entity, Class<R> clazz) {
         try {

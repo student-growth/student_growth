@@ -14,8 +14,12 @@ import java.util.List;
 public interface ScoreInfoMapper extends BaseMapper<ScoreEntity>{
 
 
-    @SelectProvider(type = ScoreProvider.class,method = "selectOne")
+    @SelectProvider(type = ScoreProvider.class,method = "selectScore")
     List<ScoreEntity> selectScoreById(@Param("id") String id);
+
+
+    @SelectProvider(type = ScoreProvider.class,method = "selectScore")
+    List<ScoreEntity> selectScoreWithSemester(@Param("id") String id, @Param("semester") String semester);
 
 
 }

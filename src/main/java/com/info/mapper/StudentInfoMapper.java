@@ -24,6 +24,10 @@ public interface StudentInfoMapper extends BaseMapper<Student> {
             " LIMIT #{start},#{size}")
     List<Student> pageSelectStudent(@Param("start")int start, @Param("size")int size);
 
+    @SelectProvider(type = StudentProvider.class,method ="selectStudents")
+    List<Student> selectStudents(@Param("id") String id,
+                                 @Param("grade") String grade);
+
 
 
 

@@ -9,6 +9,9 @@ import lombok.Data;
 @Data
 public class ApplyDTO {
 
+    //申请单号
+    private String id;
+
     private String studentId;
 
     private String applyId;

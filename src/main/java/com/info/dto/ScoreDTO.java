@@ -24,25 +24,25 @@ public class ScoreDTO {
     private String courseType;
 
     @ExcelColumn(name = "期末成绩")
-    private Double finalScore;
+    private String finalScore;
 
     @ExcelColumn(name = "平时成绩")
     private Double dailyScore;
 
     @ExcelColumn(name = "折算成绩")
-    private  Double score;
+    private  String score;
 
     @ExcelColumn(name = "学分")
-    private Double credit;
+    private String credit;
 
     @ExcelColumn(name = "绩点")
-    private Double point;
+    private String point;
 
     @ExcelColumn(name="补考成绩")
-    private Double retestScore;
+    private String retestScore;
 
     @ExcelColumn(name = "重修成绩")
-    private Double rebuildScore;
+    private String rebuildScore;
 
 }
 

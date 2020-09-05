@@ -10,15 +10,6 @@ import lombok.Data;
 public class AssessEntity {
 
 
-    public AssessEntity(String id,String other,int psy,int moral){
-        this.id=id;
-        this.other = other;
-        this.psy=psy;
-        this.moral = moral;
-    }
-    public AssessEntity(){
-
-    }
     private String id;
 
     private String other;
@@ -26,5 +17,19 @@ public class AssessEntity {
     private int psy;
 
     private int moral;
+
+    private String semester;
+
+    public AssessEntity(String id, String other, int psy, int moral) {
+        this.id = id;
+        this.other = other;
+        this.psy = psy;
+        this.moral = moral;
+    }
+
+    public AssessEntity() {
+
+    }
+
 
 }

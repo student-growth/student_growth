@@ -23,4 +23,10 @@ public class CommentFormBean {
     //品德分数
     private int moral;
 
+//    //所在年级 不需要，可以通过学号查询
+//    private String grade;
+
+
+    private String semester;
+
 }
