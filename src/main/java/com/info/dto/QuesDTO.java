@@ -9,12 +9,17 @@ import lombok.Data;
 @Data
 public class QuesDTO {
 
-    private String category;
+    //反馈单号
+    private String id;
+
+    private String studentId;
 
     private String title;
 
     private String content;
 
     private String receiver;
+
+    private String feedback;
 
 }

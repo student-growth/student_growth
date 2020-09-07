@@ -1,30 +1,18 @@
 package com.info.controller.pc;
 
 import com.info.common.ReturnData;
-import com.info.common.ReturnValue;
 import com.info.common.sysenum.StateMsg;
 import com.info.dto.ArticleDTO;
-import com.info.dto.FileDTO;
-import com.info.dto.pc.ImageDTO;
 import com.info.service.pc.NewsService;
-import com.info.util.RandomUtil;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 /**
  * @author : yue

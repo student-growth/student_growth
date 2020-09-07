@@ -1,9 +1,9 @@
 package com.info.service;
 
 import com.info.common.sysenum.StateMsg;
-import com.info.converter.QuesConverter;
 import com.info.dto.QuesDTO;
 import com.info.entity.QuesEntity;
+import com.info.entity.converter.Converter;
 import com.info.mapper.QuesMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,25 +20,41 @@ public class QuesService {
     @Autowired
     private QuesMapper quesMapper;
 
-    @Autowired
-    private QuesConverter quesConverter;
+    private Converter<QuesEntity> quesEntityConverter = new Converter<>();
+    private Converter<QuesDTO> quesDTOConverter = new Converter<>();
 
-    public String saveQuestion(QuesDTO dto) throws Exception{
-        QuesEntity entity = new QuesEntity();
-        entity.setCategory(dto.getCategory());
-        entity.setTitle(dto.getTitle());
-        entity.setContent(dto.getContent());
-        entity.setReceiver(dto.getReceiver());
+
+    public String saveQuestion(QuesDTO dto) throws Exception {
+        QuesEntity entity = quesDTOConverter.clone(dto, QuesEntity.class);
         int res = quesMapper.insertQuest(entity);
-        return res>0? StateMsg.StateMsg_200.getMsg():StateMsg.StateMsg_500.getMsg();
+        return res > 0 ? StateMsg.StateMsg_200.getMsg() : StateMsg.StateMsg_500.getMsg();
     }
 
 
-    public List<QuesDTO> getQuesList(int size){
+    //分页查询
+    public List<QuesDTO> getQuesList(int size) {
         List<QuesEntity> entities = quesMapper.selectQuest(0, size);
-        return entities.stream().map(item->quesConverter.entityConv(item))
+        return entities.stream().map(item -> quesEntityConverter.clone(item, QuesDTO.class))
                 .collect(Collectors.toList());
+    }
 
+    public List<QuesDTO> getQuesList(String studentId, int size) {
+        List<QuesEntity> list = quesMapper.selectByStuID(studentId);
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+        if (size <= 0) {
+            return list.stream().map(item -> quesEntityConverter.clone(item, QuesDTO.class))
+                    .collect(Collectors.toList());
+        } else {
+            return list.stream().map(item -> quesEntityConverter.clone(item, QuesDTO.class))
+                    .limit(size)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public String getFeedBack(String id){
+        return  quesMapper.selectFeedback(id);
     }
 
 }

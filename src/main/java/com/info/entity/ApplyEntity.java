@@ -2,6 +2,8 @@ package com.info.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author : yue
  * @Date : 2020/8/23 / 14:57
@@ -32,5 +34,8 @@ public class ApplyEntity {
      * 人工审核后的批注
      */
     private String remarks;
+
+
+    private int score;
 
 }

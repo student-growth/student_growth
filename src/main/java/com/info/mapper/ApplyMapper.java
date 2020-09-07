@@ -27,8 +27,12 @@ public interface ApplyMapper extends BaseMapper<ApplyEntity> {
 
     @SelectProvider(type = com.info.mapper.provider.ApplyProvider.class,
             method = "selectApplyInfo")
-    List<ApplyEntity> selectApplyByState(@Param("studentId") String id,
+    List<ApplyEntity> selectApplyByState(@Param("studentId") String studentId,
                                          @Param("state") String state);
+
+
+    @SelectProvider(type = ApplyProvider.class,method = "selectById")
+    ApplyEntity selectById(@Param("id") String id);
 
 
     @UpdateProvider(type = ApplyProvider.class,method = "updateState")
@@ -43,4 +47,7 @@ public interface ApplyMapper extends BaseMapper<ApplyEntity> {
 
     @UpdateProvider(type = ApplyProvider.class,method = "updateApplyContent")
     int updateApply(@Param("entity") ApplyEntity entity);
+
+
+
 }

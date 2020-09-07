@@ -17,7 +17,16 @@ public interface QuesMapper extends BaseMapper<QuesEntity>{
     @InsertProvider(type = QuesProvider.class,method = "insertOne")
     int insertQuest(@Param("question") QuesEntity entity);
 
+    @SelectProvider(type = QuesProvider.class,method = "selectFeedback")
+    String selectFeedback(@Param("id") String id);
+
+
     @SelectProvider(type = QuesProvider.class,method = "pageSelect")
     List<QuesEntity> selectQuest(@Param("start") int start,
                                  @Param("size") int size);
+
+    @SelectProvider(type = QuesProvider.class,method = "selectByStuID")
+    List<QuesEntity> selectByStuID(@Param("studentId") String studentId);
+
 }
+

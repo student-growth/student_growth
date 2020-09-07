@@ -21,7 +21,7 @@ public class QuestController {
     @Autowired
     private QuesService quesService;
 
-    @PostMapping("/feedback")
+    @PostMapping("/save")
     public ReturnData<String> saveQuestion(@RequestBody QuesDTO question){
         ReturnData<String> result = new ReturnData<>();
         try{
@@ -35,6 +35,37 @@ public class QuestController {
         return result;
     }
 
+    @GetMapping("/getFeedback")
+    public ReturnData<String>  getFeedback(@RequestParam("id") String id){
+        ReturnData<String> result = new ReturnData<>();
+        try{
+            String feedBack = quesService.getFeedBack(id);
+            result.setData(feedBack);
+        }catch (Exception e){
+            result.setSysError(e.getMessage());
+            result.setStateMsg(StateMsg.StateMsg_500);
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public ReturnValue<QuesDTO> getQuesListByStuID(@RequestParam("studentId") String studentId,
+                                                   @RequestParam("size") int size){
+        ReturnValue<QuesDTO> result = new ReturnValue<>();
+        try{
+            List<QuesDTO> data = quesService.getQuesList(studentId,size);
+            result.setList(data);
+        }catch (Exception e){
+            result.setStateMsg(StateMsg.StateMsg_500);
+            result.setSysError(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //PC端页面查询
     @GetMapping("/getQues")
     public ReturnValue<QuesDTO> getQuesList(@RequestParam("size") int size){
         ReturnValue<QuesDTO> result = new ReturnValue<>();

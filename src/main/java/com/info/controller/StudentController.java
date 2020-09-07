@@ -87,7 +87,8 @@ public class StudentController {
     }
 
 
-    @ApiOperation("查询学生成绩")
+
+    //查询学生成绩
     @RequestMapping(value = "/score", method = RequestMethod.GET)
     public ReturnData<Map<String, List<ScoreDTO>>> getScoreById(@RequestParam("id") String id,
                                                                 @RequestParam("semester") String semester) {

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -92,11 +93,11 @@ public class StudentService {
         return StateMsg.StateMsg_200.getMsg();
     }
 
-    public List<StudentInfoDto> getStudentList(String id,String grade){
+    public List<StudentInfoDto> getStudentList(String id, String grade) {
 
         List<Student> students = studentMapper.selectStudents(id, grade);
-        return students.stream().map(item->
-            studentConverter.clone(item,StudentInfoDto.class))
+        return students.stream().map(item ->
+                studentConverter.clone(item, StudentInfoDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -137,13 +138,12 @@ public class StudentService {
     }
 
 
-
-    public Map<String, List<ScoreDTO>> groupQueryScore(String id,String semester)
+    public Map<String, List<ScoreDTO>> groupQueryScore(String id, String semester)
             throws SystemException {
         List<ScoreEntity> scores;
-        if(semester!=null){
-            scores = scoreMapper.selectScoreWithSemester(id,semester);
-        }else{
+        if (semester != null) {
+            scores = scoreMapper.selectScoreWithSemester(id, semester);
+        } else {
             scores = scoreMapper.selectScoreById(id);
         }
         if (null == scores || scores.size() == 0) {
@@ -199,6 +199,7 @@ public class StudentService {
         entity.setFormData(applyDTO.getFormData());
         entity.setFormTemp(applyDTO.getFormTemp());
         entity.setImage(imgPath);
+        entity.setScore(applyDTO.getScore());
         entity.setApplyState(ApplyEnum.APPLYING.name());
 
         Integer insert = applyMapper.insert(entity);
@@ -222,19 +223,18 @@ public class StudentService {
     //获取进度列表
     public List<ApplyDTO> getProcessList(ProcessFormBean formBean)
             throws Exception {
-        List<ApplyEntity> entities ;
+        List<ApplyEntity> entities;
         if (formBean.getState() == null) {
             entities = applyMapper.selectApplyInfo(formBean.getStudentId());
         } else {
             entities = applyMapper.selectApplyByState(formBean.getStudentId(), formBean.getState());
         }
         if (entities == null || entities.isEmpty()) {
-            return  null;
+            return null;
         }
         return entities.stream().map(item -> {
             ApplyDTO applyDTO = new ApplyDTO();
             applyDTO.setId(item.getId());
-
             applyDTO.setApplyName(item.getApplyName());
             applyDTO.setFormData(item.getFormData());
             applyDTO.setFormTemp(item.getFormTemp());
@@ -245,11 +245,10 @@ public class StudentService {
 
     }
 
-
-    public String getFormTemp(String menuId,String projectId) throws Exception {
-        String formTemp = applyProjectMapper.selectFormTemp(menuId);
-        if(formTemp==null || formTemp.equals("")){
-            formTemp= applyProjectMapper.selectTempInProject(projectId);
+    public String getFormTemp(String menuId, String projectId) throws Exception {
+        String formTemp = applyProjectMapper.selectTempInProject(projectId);
+        if (formTemp == null || formTemp.equals("")) {
+            formTemp = applyProjectMapper.selectFormTemp(menuId);
         }
         return formTemp;
     }

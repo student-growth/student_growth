@@ -34,7 +34,8 @@ public class ApplyController {
                                           @RequestParam("userId") String userId,
                                           @RequestParam("applyId") String applyId,
                                           @RequestParam("formTemp") String formTemp,
-                                          @RequestParam("applyName") String applyName){
+                                          @RequestParam("applyName") String applyName,
+                                          @RequestParam("score") int score){
         ReturnData<String> result = new ReturnData<>();
         try{
             ApplyDTO applyDTO = new ApplyDTO();
@@ -43,6 +44,7 @@ public class ApplyController {
             applyDTO.setFormData(formData);
             applyDTO.setFormTemp(formTemp);
             applyDTO.setApplyName(applyName);
+            applyDTO.setScore(score);
             String data = stuService.submitApply(applyDTO, file);
             result.setData(data);
 

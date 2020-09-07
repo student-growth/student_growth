@@ -12,13 +12,15 @@ public class QuesEntity {
 
     private String id;
 
-    private String category;
+    private String studentId;
 
     private String title;
 
     private String content;
 
     private String receiver;
+
+    private String feedback;
 
 
 

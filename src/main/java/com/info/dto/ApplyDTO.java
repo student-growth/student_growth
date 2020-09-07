@@ -24,5 +24,8 @@ public class ApplyDTO {
 
     private String image;
 
+    //申请学生的成绩
+    private int  score;
+
     private String applyState;
 }
