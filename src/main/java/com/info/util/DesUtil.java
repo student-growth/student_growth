@@ -75,10 +75,8 @@ public class DesUtil {
     }
 
 
-    public static void main(String[] args) {
-        System.out.println("url::"+encrypt("jdbc:mysql://rm-bp136030w7ps9vy96ko.mysql.rds.aliyuncs.com:3306/student_growth?characterEncoding=UTF-8&serverTimezone=GMT",KEY));
-        System.out.println("username::"+encrypt("jiangxian",KEY));
-        System.out.println("password::"+encrypt("student_growth",KEY));
-
-    }
+//    public static void main(String[] args) {
+//        System.out.println("url::"+encrypt("c9cdba33124fa85875a9b21a30cf4c18",KEY));
+//
+//    }
 }

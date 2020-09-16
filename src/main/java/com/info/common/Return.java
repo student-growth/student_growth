@@ -39,4 +39,9 @@ public class Return<T> {
         this.code = state.getState();
         this.msg = "["+param+"]"+state.getMsg();
     }
+    public void setError(Exception e){
+        this.code=500;
+        this.sysError=e.getMessage();
+        this.msg="操作失败";
+    }
 }

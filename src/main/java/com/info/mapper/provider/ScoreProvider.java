@@ -2,14 +2,12 @@ package com.info.mapper.provider;
 
 import com.info.entity.ScoreEntity;
 import com.info.mapper.sql.SQLBuilder;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.jdbc.SQL;
 
 import java.util.Map;
 
 /**
  * @author : yue
- * @Date : 2020/7/21 / 18:49
+ * @since  : 2020/7/21 / 18:49
  */
 public class ScoreProvider {
 

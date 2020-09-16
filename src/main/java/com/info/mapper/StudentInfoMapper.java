@@ -56,4 +56,7 @@ public interface StudentInfoMapper extends BaseMapper<Student> {
 
     @Update("update student set password=#{password} WHERE id=#{id}")
     int  updatePassword(@Param("id") String id,@Param("password") String password);
+
+
+
 }

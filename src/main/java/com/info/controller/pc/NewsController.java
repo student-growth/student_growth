@@ -70,18 +70,18 @@ public class NewsController {
     }
 
 
-    @RequestMapping(value = "/edit_article",method = RequestMethod.POST)
-    public ReturnData<String> editArticle(@RequestBody ArticleDTO article){
-        ReturnData<String> result = new ReturnData<>();
-        try{
-            String data = newsService.saveArticle(article);
-            result.setData(data);
-        }catch (Exception e){
-            result.setStateMsg(StateMsg.StateMsg_500);
-            result.setSysError(e.getMessage());
-            e.printStackTrace();
-        }
-        return result;
-    }
+//    @RequestMapping(value = "/edit_article",method = RequestMethod.POST)
+//    public ReturnData<String> editArticle(@RequestBody ArticleDTO article){
+//        ReturnData<String> result = new ReturnData<>();
+//        try{
+//            String data = newsService.saveArticle(article);
+//            result.setData(data);
+//        }catch (Exception e){
+//            result.setStateMsg(StateMsg.StateMsg_500);
+//            result.setSysError(e.getMessage());
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
 }

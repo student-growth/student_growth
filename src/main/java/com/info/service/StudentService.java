@@ -21,9 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +39,10 @@ public class StudentService {
     @Resource
     private AssessMapper assessMapper;
 
+
+    @Autowired
+    private AbilityMapper abilityMapper;
+
     @Autowired
     private FastClientUtil clientUtil;
 
@@ -50,8 +52,13 @@ public class StudentService {
     @Autowired
     private ApplyMapper applyMapper;
 
-    @Autowired
-    private CETScoreMapper cetScoreMapper;
+//    @Autowired
+//    private CETScoreMapper cetScoreMapper;
+
+
+    private String[] typeList = new String[]{
+            "creative", "profession", "leader", "practice", "special"
+    };
 
     private Converter<ScoreEntity> scoreConverter = new Converter<>();
 
@@ -62,14 +69,14 @@ public class StudentService {
     private Converter<CETScoreEntity> cetScoreConverter = new Converter<>();
 
 
-    @ApiOperation(value = "通过学号密码获取学生基本信息")
     public StudentInfoDto getStudentInfo(String id, String password) throws Exception {
         Student entity = studentMapper.getStudentById(id);
         if (null == entity) {
-            throw new SystemException(StateMsg.StateMsg_202);
+            throw new SystemException(StateMsg.StateMsg_205);
         }
-        String encryptCode = EncryptUtil.encryptMD5(password);
-        if (!entity.getPassword().equals(encryptCode)) {
+        //去掉加密过程
+        //String encryptCode = EncryptUtil.encryptMD5(password);
+        if (!entity.getPassword().equals(password)) {
             throw new SystemException(StateMsg.StateMsg_203);
         }
 
@@ -78,7 +85,6 @@ public class StudentService {
     }
 
 
-    @ApiOperation("修改密码")
     public String updatePassword(String id, String password, String newPassword)
             throws SystemException {
         String pwd = studentMapper.getPassword(id);
@@ -115,7 +121,6 @@ public class StudentService {
     }
 
 
-    @ApiOperation("修改密码")
     public String changePassword(String id, String oldPassword)
             throws SystemException {
         String password = studentMapper.getPassword(id);
@@ -126,16 +131,17 @@ public class StudentService {
     }
 
 
-    @ApiOperation("获取成绩")
-    public List<ScoreDTO> queryScoreById(String id) throws Exception {
-        List<ScoreEntity> scores = scoreMapper.selectScoreById(id);
-        if (null == scores || scores.size() == 0) {
-            throw new SystemException(StateMsg.StateMsg_104);
-        }
-        return scores.stream().map(item ->
-                scoreConverter.clone(item, ScoreDTO.class))
-                .collect(Collectors.toList());
-    }
+//
+//    @ApiOperation("获取成绩")
+//    public List<ScoreDTO> queryScoreById(String id) throws Exception {
+//        List<ScoreEntity> scores = scoreMapper.selectScoreById(id);
+//        if (null == scores || scores.size() == 0) {
+//            throw new SystemException(StateMsg.StateMsg_104);
+//        }
+//        return scores.stream().map(item ->
+//                scoreConverter.clone(item, ScoreDTO.class))
+//                .collect(Collectors.toList());
+//    }
 
 
     public Map<String, List<ScoreDTO>> groupQueryScore(String id, String semester)
@@ -187,18 +193,21 @@ public class StudentService {
     //提交申请
     public String submitApply(ApplyDTO applyDTO, MultipartFile file)
             throws Exception {
-
-        StorePath upload = clientUtil.upload(file);
-        String imgPath = upload.getGroup() + "/" + upload.getPath();
-        String id = RandomUtil.getRandomStr(20);
         ApplyEntity entity = new ApplyEntity();
+        if (file != null) {
+            StorePath upload = clientUtil.upload(file);
+            String imgPath = upload.getGroup() + "/" + upload.getPath();
+            entity.setImage(imgPath);
+        }
+
+        String id = RandomUtil.getRandomStr(20);
         entity.setId(id);
         entity.setStudentId(applyDTO.getStudentId());
         entity.setApplyId(applyDTO.getApplyId());
         entity.setApplyName(applyDTO.getApplyName());
         entity.setFormData(applyDTO.getFormData());
         entity.setFormTemp(applyDTO.getFormTemp());
-        entity.setImage(imgPath);
+
         entity.setScore(applyDTO.getScore());
         entity.setApplyState(ApplyEnum.APPLYING.name());
 
@@ -207,17 +216,17 @@ public class StudentService {
     }
 
 
-    public Map<String, List<CETScoreDTO>> getAllCETScore(String id) throws Exception {
-        List<CETScoreEntity> cet = cetScoreMapper.selectByIdAndType(id);
-
-        if (cet == null) {
-            throw new SystemException(StateMsg.StateMsg_104);
-        }
-
-        return cet.stream()
-                .map(item -> cetScoreConverter.clone(item, CETScoreDTO.class))
-                .collect(Collectors.groupingBy(CETScoreDTO::getCetLevel));
-    }
+//    public Map<String, List<CETScoreDTO>> getAllCETScore(String id) throws Exception {
+//        List<CETScoreEntity> cet = cetScoreMapper.selectByIdAndType(id);
+//
+//        if (cet == null) {
+//            throw new SystemException(StateMsg.StateMsg_104);
+//        }
+//
+//        return cet.stream()
+//                .map(item -> cetScoreConverter.clone(item, CETScoreDTO.class))
+//                .collect(Collectors.groupingBy(CETScoreDTO::getCetLevel));
+//    }
 
 
     //获取进度列表
@@ -253,6 +262,33 @@ public class StudentService {
         return formTemp;
     }
 
+    //获得综合成绩排名，六大类每一类的前三名
+    public Map<String, List<AbilityEntity>> getRank(String studentId,
+                                                    String semester)
+            throws Exception {
+        String classYear = studentId.substring(0, 2);
+
+        Map<String, List<AbilityEntity>> map = new HashMap<>();
+        for (int i = 0; i < this.typeList.length; i++) {
+            List<AbilityEntity> list = abilityMapper.getComprehensiveRank(semester, classYear,this.typeList[i], 3);
+            map.put(this.typeList[i], list);
+        }
+        return map;
+    }
+
+    //获取个性化榜单
+    public AbilityEntity getPersonalList(String studentId) throws Exception {
+        String exampleId = abilityMapper.selectPersonalizedId(studentId);
+        int year = DateUtil.getNowYear();
+        //默认当前学期
+        return  abilityMapper.selectAbilityAllScore(exampleId, year + "-" + (year + 1));
+    }
+
+
+    public AbilityEntity getAbilityAllScore(String studentId) throws Exception{
+        int year = DateUtil.getNowYear();
+        return  abilityMapper.selectAbilityAllScore(studentId, year + "-" + (year + 1));
+    }
     public byte[] downloadFile(String group, String path)
             throws Exception {
         return clientUtil.download(group, path);

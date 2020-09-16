@@ -4,6 +4,8 @@ import com.info.common.ReturnData;
 import com.info.common.ReturnValue;
 import com.info.common.sysenum.StateMsg;
 import com.info.dto.*;
+import com.info.entity.AbilityEntity;
+import com.info.entity.ApplyEntity;
 import com.info.entity.Student;
 import com.info.formbean.*;
 import com.info.service.CommentService;
@@ -189,7 +191,50 @@ public class StudentController {
         return result;
     }
 
+    //获得谁是大神排名
+    @RequestMapping(value = "/getRank",method = RequestMethod.POST)
+    public ReturnData<Map<String,List<AbilityEntity>>> getRank(@RequestBody CommonFormBean formBean){
+        ReturnData<Map<String,List<AbilityEntity>>> result=new ReturnData<>();
+        try {
+            Map<String, List<AbilityEntity>> data = stuService.getRank(formBean.getStudentId(),formBean.getSemester());
+            result.setData(data);
+        }catch (Exception e){
+            result.setStateMsg(StateMsg.StateMsg_500);
+            result.setSysError(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
 
+    //获得某一学生的综合成绩
+    @RequestMapping(value = "/getAbilityAllScore",method = RequestMethod.GET)
+    public ReturnData<AbilityEntity> getAbilityAllScore (@RequestParam("studentId") String studentId){
+        ReturnData<AbilityEntity> result=new ReturnData<>();
+        try {
+            AbilityEntity data = stuService.getAbilityAllScore(studentId);
+            result.setData(data);
+        }catch (Exception e){
+            result.setStateMsg(StateMsg.StateMsg_500);
+            result.setSysError(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //获得个性化榜单
+    @RequestMapping(value = "/personalizedList",method = RequestMethod.GET)
+    public ReturnData<AbilityEntity>  getPersonalizedList(@RequestParam("studentId") String studentId){
+        ReturnData<AbilityEntity> result = new ReturnData<>();
+        try{
+
+            AbilityEntity data = stuService.getPersonalList(studentId);
+            result.setData(data);
+        }catch (Exception e){
+            result.setError(e);
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 //    //查询四六级成绩
 //    @RequestMapping(value = "/getCETScore",method = RequestMethod.GET)

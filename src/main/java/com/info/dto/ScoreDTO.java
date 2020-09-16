@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * @author : yue
  * 2020/7/10 / 20:59
- * 分数 DTO
+ * 期末分数 DTO
  */
 @Data
 public class ScoreDTO {
@@ -27,7 +27,7 @@ public class ScoreDTO {
     private String finalScore;
 
     @ExcelColumn(name = "平时成绩")
-    private Double dailyScore;
+    private String dailyScore;
 
     @ExcelColumn(name = "折算成绩")
     private  String score;

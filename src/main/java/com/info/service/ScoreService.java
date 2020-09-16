@@ -1,8 +1,11 @@
 package com.info.service;
 
 import com.info.common.sysenum.ApplyEnum;
+import com.info.dto.AbilityDTO;
 import com.info.dto.TotalScoreDTO;
+import com.info.entity.AbilityEntity;
 import com.info.entity.extra.ApplyExtraEntity;
+import com.info.mapper.AbilityMapper;
 import com.info.mapper.extra.ApplyExtraMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,9 @@ public class ScoreService {
 
     @Autowired
     private ApplyExtraMapper applyExtraMapper;
+
+    @Autowired
+    private AbilityMapper abilityMapper;
 
     //获取综合成绩
     public Map<String,List<TotalScoreDTO>> getTotalScore(String studentId, String semester)
@@ -46,5 +52,24 @@ public class ScoreService {
             score.setPassTime(item.getModifyTime());
             return score;
         }).collect(Collectors.groupingBy(TotalScoreDTO::getSort));
+    }
+
+
+    //获取综合能力总体分数
+    public AbilityDTO getAbilityScore(String studentId,String semester) throws Exception{
+        AbilityEntity data = abilityMapper.selectAbilityBaseScore(studentId, semester);
+        if(data==null){
+            return  null;
+        }
+        AbilityDTO result  = new AbilityDTO();
+        result.setProfession(data.getProfTotal());
+        result.setSport(data.getHealthScore());
+
+        //todo 英语平均分数
+        result.setBaseScore(data.getBaseTotal());
+        result.setBaseScoreRank(data.getBaseTotalRank());
+        result.setAbilityScore(data.getTotalScore());
+        result.setAbilityScoreRank(data.getTotalRank());
+        return result;
     }
 }

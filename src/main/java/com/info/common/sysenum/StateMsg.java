@@ -21,6 +21,7 @@ public enum  StateMsg {
     StateMsg_107(107,"Excel文件标题出现错误"),
 
     StateMsg_202(202,"学号错误或密码错误"),
+    StateMsg_205(205,"账户不存在"),
     StateMsg_203(203,"输入密码错误"),
     StateMsg_204(204,"[上传文件] 创建文件夹失败"),
 

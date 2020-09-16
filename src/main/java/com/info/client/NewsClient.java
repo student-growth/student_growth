@@ -18,11 +18,11 @@ import java.util.Map;
 
 public class NewsClient {
 
-    @Value("${news-appID}")
-    private String appId;
+//    @Value("${news-appID}")
+    private String appId="wx1530ad1155dda9ad";
 
-    @Value("${news-appSecret}")
-    private String appSecret;
+//    @Value("${news-appSecret}")
+    private String appSecret="c9cdba33124fa85875a9b21a30cf4c18";
 
 
     private String getToken() throws  IOException {
@@ -30,6 +30,7 @@ public class NewsClient {
         URL url = new URL(path+"&appid=" + appId + "&secret=" + appSecret);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
+
         connection.connect();
         InputStream in = connection.getInputStream();
         byte[] b = new byte[100];
@@ -45,7 +46,9 @@ public class NewsClient {
     //获取文章列表
     public String getContentList(int offset,int count) throws IOException {
         String token=this.getToken();
-        String path = " https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=" + token;
+        Map<String,Object> tokenMap=(Map<String,Object>)JSON.parseObject(token);
+        String path = " https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token="
+                + tokenMap.get("access_token").toString();
         URL url = new URL(path);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -54,7 +57,7 @@ public class NewsClient {
         connection.connect();
         // post发送的参数
         Map<String, Object> map = new HashMap<>();
-        map.put("type", "news"); // news表示图文类型的素材，具体看API文档
+        map.put("type", "news"); // news表示图文类型的素材
         map.put("offset", offset);
         map.put("count", count);
         // 将map转换成json字符串

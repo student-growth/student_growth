@@ -1,7 +1,9 @@
 package com.info.mapper.provider;
 
+import com.info.entity.AbilityEntity;
 import com.info.entity.Student;
 import com.info.mapper.sql.SQLBuilder;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 
 import java.util.List;
@@ -57,4 +59,29 @@ public class StudentProvider {
         }
         return sql.toString().substring(0,sql.length()-1);
     }
+
+
+
+    public String getComprehensiveRank(Map<String,Object> params){
+        //学年
+        String semester = (String) params.get("semester");
+        int limit = (int) params.get("limit");
+        String type = (String)params.get("type");
+        String classYear = (String) params.get("classYear");
+        StringBuilder sql = new StringBuilder();
+//        select comprehensive_ability_rank.`name`, comprehensive_ability_rank.student_id, creative
+//        from comprehensive_ability_rank
+//        where comprehensive_ability_rank.student_id like '17%'
+//        ORDER BY creative desc
+//        limit 0,3
+        sql.append("select comprehensive_ability_rank.`name` , comprehensive_ability_rank.student_id as studentId")
+                .append(" from comprehensive_ability_rank ")
+                .append(" where comprehensive_ability_rank.student_id like '").append(classYear)
+                .append("%' and semester='")
+                .append(semester).append("'")
+        .append(" order by ").append(type).append(" desc limit  0 ,").append(limit);
+        return sql.toString();
+    }
+
+
 }

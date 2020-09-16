@@ -1,16 +1,16 @@
 package com.info.controller;
 
 import com.info.common.ReturnData;
+import com.info.common.ReturnValue;
 import com.info.common.sysenum.StateMsg;
+import com.info.dto.AbilityDTO;
 import com.info.dto.TotalScoreDTO;
+import com.info.formbean.CommonFormBean;
 import com.info.mapper.extra.ApplyExtraMapper;
 import com.info.service.ScoreService;
 import com.info.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -43,12 +43,25 @@ public class ScoreController {
         } catch (Exception e) {
             e.printStackTrace();
             result.setSysError(e.getMessage());
-            result.setStateMsg(StateMsg.StateMsg_500);
+
         }
         return result;
     }
 
-    //获取基本评价指标
+    //获取综合成绩-用于奖学金查询
+    @RequestMapping(value = "/comprehensive_score",method = RequestMethod.POST)
+    public ReturnData<AbilityDTO> getComprehensiveScore(@RequestBody CommonFormBean formBean){
+        ReturnData<AbilityDTO> result = new ReturnData<>();
+        try{
+            AbilityDTO data = scoreService.getAbilityScore(formBean.getStudentId(), formBean.getSemester());
+            result.setData(data);
+        }catch (Exception e){
+            result.setError(e);
+            e.printStackTrace();
+        }
 
+
+        return result;
+    }
 
 }

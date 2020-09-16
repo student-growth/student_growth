@@ -8,7 +8,8 @@ import java.util.Map;
 
 /**
  * @author : yue
- * @Date : 2020/9/4 / 14:16
+ * @since  2020/9/4 / 14:16
+ * 心理测试
  */
 public class PsychologyProvider {
 

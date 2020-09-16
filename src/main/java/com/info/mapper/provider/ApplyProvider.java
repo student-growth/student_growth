@@ -1,8 +1,10 @@
 package com.info.mapper.provider;
 
 import com.info.entity.ApplyEntity;
+import com.info.entity.ScholarshipEntity;
 import com.info.mapper.sql.SQLBuilder;
 import com.info.util.DateUtil;
+import com.info.util.RandomUtil;
 import jdk.nashorn.api.scripting.ScriptUtils;
 import org.springframework.util.unit.DataUnit;
 
@@ -11,7 +13,7 @@ import java.util.Map;
 
 /**
  * @author : yue
- * @Date : 2020/8/23 / 16:26
+ * @since : 2020/8/23 / 16:26
  */
 public class ApplyProvider {
 
@@ -140,6 +142,38 @@ public class ApplyProvider {
         sql.append("select id,image")
                 .append(" from apply ")
                 .append(" where id='").append(id).append("'");
+
+        return sql.toString();
+    }
+
+
+    public String applyScholarship(Map<String,Object> params){
+        ScholarshipEntity entity = (ScholarshipEntity) params.get("entity");
+        StringBuilder sql =new StringBuilder();
+        sql.append("insert into apply_scholarship(id,student_id,apply_name,apply_mark,apply_status,apply_level)")
+                .append(" value('").append(RandomUtil.getRandomNum(10)).append("',")
+                .append(" '").append(entity.getStudentId()).append("',")
+                .append(" '").append(entity.getApplyName()).append("',")
+                .append(" '").append(entity.getApplyMark()).append("',")
+                .append(" '").append(entity.getApplyStatus()).append("',")
+                .append(entity.getApplyLevel()).append(")");
+
+        return sql.toString();
+    }
+
+
+    public String selectScholarship(Map<String,Object> params){
+        String studentId=(String)params.get("studentId");
+        String semester = (String)params.get("semester");
+        String applyName = (String)params.get("applyName");
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("select id, apply_mark as applyMark , apply_status as applyStatus,")
+                .append(" apply_level as applyLevel,  audit_results as auditResults")
+                .append(" from apply_scholarship")
+                .append(" where student_id='").append(studentId).append("'")
+                .append(" and semester='").append(semester).append("'")
+                .append(" and apply_name='").append(applyName).append("'");
 
         return sql.toString();
     }
