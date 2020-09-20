@@ -11,6 +11,7 @@ import com.info.entity.converter.Converter;
 import com.info.formbean.ScholarshipFormBean;
 import com.info.mapper.ApplyMapper;
 import com.info.mapper.ScholarshipMapper;
+import com.info.util.DateUtil;
 import com.info.util.FastClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,6 +100,10 @@ public class ApplyService {
 
         ScholarshipEntity clone = formBeanConverter.clone(formBean, ScholarshipEntity.class);
         clone.setApplyStatus(ApplyEnum.APPLYING.name());
+        if(formBean.getSemester()==null){
+            int year = DateUtil.getNowYear();
+            clone.setSemester(year+"-"+(year+1));
+        }
         int res = scholarshipMapper.insertScholarship(clone);
         return res == 1 ? StateMsg.StateMsg_200.getMsg() : StateMsg.StateMsg_500.getMsg();
     }

@@ -21,6 +21,8 @@ public class ScholarshipEntity {
 
     private int applyLevel;
 
+    private String semester;
+
     //审核结果
     private String auditResults;
 
