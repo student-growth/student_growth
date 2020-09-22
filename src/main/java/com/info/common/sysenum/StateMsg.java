@@ -14,7 +14,7 @@ public enum  StateMsg {
 
     StateMsg_101(101,"参数错误"),
     StateMsg_102(102,"未选择文件"),
-    StateMsg_103(103,"文件名称为空"),
+    StateMsg_103(103,"文件名为空"),
     StateMsg_104(104,"查询数据为空"),
     StateMsg_105(105,"文件上传失败"),
     StateMsg_106(106,"文件不存在"),

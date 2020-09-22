@@ -13,7 +13,7 @@ import java.io.*;
 
 /**
  * @author : yue
- * 2020/7/17 / 0:48
+ * @since 2020/7/17 0:48
  */
 @Component
 public class FastClientUtil {
@@ -23,7 +23,7 @@ public class FastClientUtil {
 
 
 
-    public StorePath upload(MultipartFile file) throws IOException,SystemException{
+    public StorePath upload(MultipartFile file) throws Exception{
         String fileName = file.getOriginalFilename();
         if(fileName==null || fileName.isEmpty()){
             throw new SystemException(StateMsg.StateMsg_103);
