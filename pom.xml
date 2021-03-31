@@ -29,7 +29,7 @@
     <spring-boot.version>2.1.2.RELEASE</spring-boot.version>
     <slf4j.version>1.7.26</slf4j.version>
     <lombok.version>1.18.8</lombok.version>
-    <guava.version>27.1-jre</guava.version>
+    <guava.version>29.0-jre</guava.version>
     <springfox.version>2.9.2</springfox.version>
     <fastjson.version>1.2.24</fastjson.version>
     <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
