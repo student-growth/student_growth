@@ -27,8 +27,8 @@ public class NewsController {
     private String filePath;
 
 
-    @Value("${article-path}")
-    private String articlePath;
+//    @Value("${article-path}")
+//    private String articlePath;
 
     @Autowired
     private NewsService newsService;

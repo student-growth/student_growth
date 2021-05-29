@@ -41,8 +41,8 @@ public class NewsService {
     @Autowired
     private FastClientUtil client;
 
-    @Value("${article-path}")
-    private String articlePath;
+//    @Value("${article-path}")
+//    private String articlePath;
 
 
     private NewsClient newsClient=new NewsClient();
