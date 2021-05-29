@@ -23,8 +23,8 @@ import java.nio.file.Paths;
 @RequestMapping("/news")
 public class NewsController {
 
-    @Value("${uploadpath-root-dir}")
-    private String filePath;
+//    @Value("${uploadpath-root-dir}")
+//    private String filePath;
 
 
 //    @Value("${article-path}")
@@ -54,20 +54,20 @@ public class NewsController {
      * @param response void
      * @param name fileName
      */
-    @GetMapping("/download/{name}")
-    public void getImage(HttpServletResponse response,
-                         @PathVariable("name") String name) {
-        try{
-            response.setContentType("image/jpeg;charset=utf-8");
-            response.setHeader( "Content-Disposition",String.format("attachment;filename=\"%s",name));
-            ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(Files.readAllBytes(Paths.get(filePath).resolve(name)));
-            outputStream.flush();
-            outputStream.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+//    @GetMapping("/download/{name}")
+//    public void getImage(HttpServletResponse response,
+//                         @PathVariable("name") String name) {
+//        try{
+//            response.setContentType("image/jpeg;charset=utf-8");
+//            response.setHeader( "Content-Disposition",String.format("attachment;filename=\"%s",name));
+//            ServletOutputStream outputStream = response.getOutputStream();
+//            outputStream.write(Files.readAllBytes(Paths.get(filePath).resolve(name)));
+//            outputStream.flush();
+//            outputStream.close();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
 
 //    @RequestMapping(value = "/edit_article",method = RequestMethod.POST)
